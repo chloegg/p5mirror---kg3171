@@ -68,6 +68,8 @@ Generated listing of editor.p5js projects
 #
 bin/mirror.sh --user p5name
 
+bin/mirror.sh --user kg3171
+
 # full update, download all projects
 #
 bin/mirror.sh --user p5name --full

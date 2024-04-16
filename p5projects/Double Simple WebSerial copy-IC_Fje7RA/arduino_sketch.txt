@@ -1,0 +1,15 @@
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int potval = analogRead(A0);
+  int fsrval = analogRead(A1);
+
+  if (Serial.available() > 0) {
+    int incoming = Serial.read();
+    Serial.print(fsrval);
+    Serial.print(",");
+    Serial.println(potval);
+  }
+}
