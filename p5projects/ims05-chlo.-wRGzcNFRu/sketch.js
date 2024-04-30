@@ -1,5 +1,5 @@
-//https://editor.p5js.org/kg3171/sketches/XqtIs0y7O
-//ims04-chlo.
+//https://editor.p5js.org/kg3171/sketches/wRGzcNFRu
+//ims05-chlo.
 
 let capture;
 let button;
@@ -13,7 +13,6 @@ let backgroundMusic;
 let frameColor = '#7fff00';
 let colorSelect;
 let userInput;
-
 
 let nostalgicMessages = [
     "🥑🐢🍄🧃🔫",
@@ -36,7 +35,7 @@ function setup() {
   capture.size(320, 240);
   capture.hide();
   
-    colorSelect = createSelect();
+  colorSelect = createSelect();
   colorSelect.position(400, 90);
   colorSelect.option('Green', '#7fff00');
   colorSelect.option('Black', '#000000');
@@ -107,7 +106,7 @@ function draw() {
     
   }
   
-        switch (selectedFilter) {
+    switch (selectedFilter) {
     case 'posterize':
       filter(POSTERIZE, 3);
       break;

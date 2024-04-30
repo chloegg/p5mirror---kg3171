@@ -1,5 +1,5 @@
 # Sketches for kg3171
-27 sketches  
+40 sketches  
 [Double Simple WebSerial copy](https://editor.p5js.org/kg3171/sketches/IC_Fje7RA)<!-- 2022-10-16T19:18:32.650Z -->  
 [Final Harry Potter Interaction](https://editor.p5js.org/kg3171/sketches/jJZsJNJw7)<!-- 2023-04-23T16:25:57.492Z -->  
 [Game Play State](https://editor.p5js.org/kg3171/sketches/8UXfiRAK3)<!-- 2022-10-05T19:12:59.041Z -->  
@@ -11,9 +11,22 @@
 [ims02-chlo.](https://editor.p5js.org/kg3171/sketches/IO23zlwZ3)<!-- 2024-04-02T15:47:49.521Z -->  
 [ims03 - chlo.](https://editor.p5js.org/kg3171/sketches/01Twqt8Ct)<!-- 2024-04-09T13:35:22.852Z -->  
 [ims04-chlo.](https://editor.p5js.org/kg3171/sketches/4sp9J0yL-f)<!-- 2024-04-16T11:18:48.902Z -->  
+[ims05-chlo.](https://editor.p5js.org/kg3171/sketches/wRGzcNFRu)<!-- 2024-04-23T13:57:16.038Z -->  
+[ims06-chlo.](https://editor.p5js.org/kg3171/sketches/q38GhePJ8)<!-- 2024-04-30T09:26:37.554Z -->  
+[ims06-chlo. copy](https://editor.p5js.org/kg3171/sketches/FKoVzAN9H)<!-- 2024-04-29T22:05:28.393Z -->  
 [interface](https://editor.p5js.org/kg3171/sketches/FAK45cDb0)<!-- 2023-04-24T13:29:49.895Z -->  
+[level 1](https://editor.p5js.org/kg3171/sketches/YaAoR6LqD)<!-- 2024-04-29T12:18:02.167Z -->  
+[Level 1 - Love Quest](https://editor.p5js.org/kg3171/sketches/5AYDZB1Aff)<!-- 2024-04-29T10:52:30.946Z -->  
+[level 1 final](https://editor.p5js.org/kg3171/sketches/C1AXypwG2)<!-- 2024-04-29T12:52:26.507Z -->  
 [Literate caper](https://editor.p5js.org/kg3171/sketches/DH4dbUGoZ)<!-- 2022-10-03T19:22:28.678Z -->  
+[Love Actually](https://editor.p5js.org/kg3171/sketches/Yz2gdVhil)<!-- 2024-04-29T04:20:42.273Z -->  
+[Love Actually copy](https://editor.p5js.org/kg3171/sketches/-HDsCS35f)<!-- 2024-04-29T04:27:10.077Z -->  
+[Love Actually copy](https://editor.p5js.org/kg3171/sketches/2HyxKnebd)<!-- 2024-04-29T04:24:55.272Z -->  
+[Love Actually copy copy copy](https://editor.p5js.org/kg3171/sketches/SmCruYZS3)<!-- 2024-04-29T04:31:04.636Z -->  
+[Love Actually Final UI](https://editor.p5js.org/kg3171/sketches/RVruVKpZZ)<!-- 2024-04-29T10:50:02.122Z -->  
+[Love Quest](https://editor.p5js.org/kg3171/sketches/C95Ii3IUO)<!-- 2024-04-29T04:24:51.961Z -->  
 [Phase flea](https://editor.p5js.org/kg3171/sketches/ITnDZZxcV)<!-- 2022-10-17T19:25:03.439Z -->  
+[PhotoBooth - IMS](https://editor.p5js.org/kg3171/sketches/7bTAzOws8)<!-- 2024-04-30T10:37:22.055Z -->  
 [Slytherin Final Spell](https://editor.p5js.org/kg3171/sketches/JpDs89NoE)<!-- 2023-05-03T20:41:21.699Z -->  
 [Stateful Game Fun Stuff](https://editor.p5js.org/kg3171/sketches/RjIdsLK2F)<!-- 2022-10-10T01:24:01.336Z -->  
 [using ellipse as tracking](https://editor.p5js.org/kg3171/sketches/6nnzLglw1)<!-- 2023-04-23T17:48:21.612Z -->  
@@ -21,7 +34,7 @@
 [Wingardium Leviosa Spell](https://editor.p5js.org/kg3171/sketches/ugwskQkXT)<!-- 2023-05-03T01:38:06.526Z -->  
 [XPhoto - Take Pic on Canvas](https://editor.p5js.org/kg3171/sketches/QUXA7qWVG)<!-- 2024-02-01T15:53:26.252Z -->  
 [XPhoto • WK2 • Get external webcam](https://editor.p5js.org/kg3171/sketches/-RoyqQUuN)<!-- 2024-02-01T16:25:34.738Z -->  
-[XPhoto Week 10](https://editor.p5js.org/kg3171/sketches/XqtIs0y7O)<!-- 2024-04-16T13:23:13.022Z -->  
+[XPhoto Week 10](https://editor.p5js.org/kg3171/sketches/XqtIs0y7O)<!-- 2024-04-30T09:22:02.085Z -->  
 [交叉手碰脚运动final](https://editor.p5js.org/kg3171/sketches/N_YQEU7TG)<!-- 2022-12-10T15:10:14.160Z -->  
 [打拳final](https://editor.p5js.org/kg3171/sketches/V_nz-Jj0K)<!-- 2022-12-10T05:38:46.039Z -->  
 [打拳实验](https://editor.p5js.org/kg3171/sketches/r5vdwoCeL)<!-- 2022-12-10T05:46:03.361Z -->  

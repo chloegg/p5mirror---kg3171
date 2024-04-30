@@ -820,6 +820,372 @@
     "id": "4sp9J0yL-f"
   },
   {
+    "name": "ims05-chlo.",
+    "_id": "wRGzcNFRu",
+    "files": [
+      {
+        "name": "root",
+        "content": "",
+        "children": [
+          "662708cd45326f0ccd61d4cf",
+          "662708cd45326f0ccd61d4d0",
+          "662708cd45326f0ccd61d4d1",
+          "662708cd45326f0ccd61d4d2",
+          "662708cd45326f0ccd61d4d3",
+          "662708cd45326f0ccd61d4d4",
+          "662708cd45326f0ccd61d4d5"
+        ],
+        "fileType": "folder",
+        "_id": "662708cd45326f0ccd61d4ce",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-23T13:57:16.038Z",
+        "updatedAt": "2024-04-23T13:57:16.038Z",
+        "id": "662708cd45326f0ccd61d4ce"
+      },
+      {
+        "name": "sketch.js",
+        "content": "//https://editor.p5js.org/kg3171/sketches/wRGzcNFRu\n//ims05-chlo.\n\nlet capture;\nlet button;\nlet camerasound;\nlet timeSelect; // Variable for the dropdown menu\nlet filterSelect; // Variable for the filter selection dropdown\nlet interval = 3000; // Default time interval\nlet mode = \"start\";\nlet selectedFilter = \"none\"; // Default filter\nlet backgroundMusic;\nlet frameColor = '#7fff00';\nlet colorSelect;\nlet userInput;\n\nlet nostalgicMessages = [\n    \"🥑🐢🍄🧃🔫\",\n    \"🌷🍰🍓🧷🎀\",\n    \"🫧🧋🦢🎧🕶️\",\n    \"🌸🍡🩰🎀🛍\",\n    \"🧾🥣🍼🧊🥚\",\n    \"🫐🎏⛄️🌊🦋\"\n];\n\nfunction preload() {\n  camerasound = loadSound('cam.mp3');\n  backgroundMusic = loadSound('background.mp3');\n  font = loadFont('font.otf');\n}\n\nfunction setup() {\n  createCanvas(320, 960);\n  capture = createCapture(VIDEO);\n  capture.size(320, 240);\n  capture.hide();\n  \n  colorSelect = createSelect();\n  colorSelect.position(400, 90);\n  colorSelect.option('Green', '#7fff00');\n  colorSelect.option('Black', '#000000');\n  colorSelect.option('Pink', '#FFC0CB');\n  colorSelect.option('Blue', '#1493ff');\n  colorSelect.option('Gray', '#dbe2e9');\n  colorSelect.option('Orange', '#ffa500');\n  colorSelect.option('DarkPink', '#ff69b4');\n  colorSelect.changed(() => frameColor = colorSelect.value());\n\n  // Time selection dropdown\n  timeSelect = createSelect();\n  timeSelect.position(400, 10);\n  timeSelect.option('3 seconds', 3000);\n  timeSelect.option('7 seconds', 7000);\n  timeSelect.option('10 seconds', 10000);\n  timeSelect.changed(() => interval = timeSelect.value());\n\n  // Filter selection dropdown\n  filterSelect = createSelect();\n  filterSelect.position(400, 50);\n  filterSelect.option('None', 'none');\n  filterSelect.option('Posterize', 'posterize');\n  filterSelect.option('Blur', 'blur');\n  filterSelect.option('Threshold', 'threshold');\n  filterSelect.option('Black&White', 'blackwhite');\n  filterSelect.changed(() => selectedFilter = filterSelect.value());\n\n  button = createButton('Press To Start');\n  button.position(250, 240);\n  button.mousePressed(getready);\n  \n  if (!backgroundMusic.isPlaying()) {\n    backgroundMusic.loop();\n    \n    userInput = createInput('');\n  userInput.position(400, 130); // Adjust position as needed\n    userInput.attribute('placeholder', 'Type text here');\n  \n}\n}\n\nfunction draw() {\n  if (mode == 'start') {\n    translate(width, 0);\n    scale(-1, 1);\n    image(capture, 0, 0);\n}\n  else if (mode=='pic1'){\n    translate(width,0);\n  scale(-1, 1);\n  image(capture, 0, 0); \n    \n  }\n  else if (mode=='pic2'){\n    translate(width,0);\n  scale(-1, 1);\n  image(capture, 0, 0); \n  }\n  else if (mode=='done'){\n    translate(width,0);\n  scale(-1, 1);\n  image(capture, 0, 0); \n    \n    \n    drawOldFashionedFrame();\n    displayNostalgicMessage(); // Display the nostalgic message\n    \n  }\n  \n    switch (selectedFilter) {\n    case 'posterize':\n      filter(POSTERIZE, 3);\n      break;\n    case 'blur':\n      filter(BLUR, 3);\n      break;\n    case 'threshold':\n      filter(THRESHOLD);\n      break;\n    case 'blackwhite':\n        filter(GRAY);\n        break;\n  }\n\n  }\n\nfunction getready() {\n  button.hide();\n  setTimeout(pic, interval); // Use the selected interval\n}\n\nfunction pic() {\n  image(capture, 0, 240);\n  mode = \"pic1\";\n  setTimeout(nextpic, interval);\n}\n\nfunction nextpic() {\n  if (mode == \"pic1\") {\n    mode = \"pic2\";\n    image(capture, 0, 480);\n    setTimeout(lastpic, interval);\n  }\n}\n\nfunction lastpic() {\n  if (mode == \"pic2\") {\n    mode = \"done\";\n    image(capture, 0, 720);\n    setTimeout(done, interval);\n  }\n}\n\nfunction done() {\n  if (mode == \"done\") {\n    mode = \"stop\";\n    image(capture, 0, 960); // Adjust if needed\n\n    let userText = userInput.value(); // Get the text from the input\n    fill(0); // Text color\n    textSize(30); // Text size\n    textAlign(CENTER, BOTTOM);\n    textFont(font);\n    text(userText, width / 2, 970 - 10); // Position the text at the bottom\n\n    setTimeout(end, 500);\n  }\n}\n\n\nfunction end(){\n  camerasound.stop();\n   butt1=createButton('Save');\n    butt1.position(300,240);\n    butt1.mousePressed(savepic);\n  \n  backgroundMusic.stop();\n\n\n}\nfunction savepic(){\n  save('myCanvas.png');\n\n}\n\nfunction displayNostalgicMessage() {\n    let message = nostalgicMessages[Math.floor(Math.random() * nostalgicMessages.length)];\n\n    textSize(30); // Keep or adjust the text size as needed\n    textAlign(CENTER, CENTER);\n    \n    // Clear the previous message by redrawing a smaller background area\n    // Adjust the fill color and coordinates as needed to match your layout\n    fill(211, 245, 245); // Background color of the message area\n    noStroke();\n    // Reduce both the vertical start position and height of the rectangle\n    rect(0, capture.height + 30, width, 40); // Further reduced height and adjusted position\n\n    // Set the fill color back for the text\n    fill(0); // Black text\n\n    // Apply the same transformations to the text as the camera feed\n    translate(width, 0);\n    scale(-1, 1);\n\n    // Adjust the vertical position of the text to align with the new rectangle size\n    text(message, width / 2, capture.height + 50);\n\n    // Reset the transformations after drawing the text\n    resetMatrix();\n}\n\nfunction drawOldFashionedFrame() {\n  noFill();\n  stroke(frameColor);\n  strokeWeight(35);\n  rect(0, 0, 320, 960);\n}\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662708cd45326f0ccd61d4d3",
+        "isSelectedFile": true,
+        "createdAt": "2024-04-23T13:57:16.038Z",
+        "updatedAt": "2024-04-23T13:57:16.038Z",
+        "id": "662708cd45326f0ccd61d4d3"
+      },
+      {
+        "name": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n    <meta charset=\"utf-8\" />\n\n  </head>\n  <body>\n    <main>\n    </main>\n    <script src=\"sketch.js\"></script>\n  </body>\n</html>\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662708cd45326f0ccd61d4d2",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-23T13:57:16.038Z",
+        "updatedAt": "2024-04-23T13:57:16.038Z",
+        "id": "662708cd45326f0ccd61d4d2"
+      },
+      {
+        "name": "style.css",
+        "content": "html, body {\n  margin: 0;\n  padding: 0;\n}\ncanvas {\n  display: block;\n}\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662708cd45326f0ccd61d4d5",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-23T13:57:16.038Z",
+        "updatedAt": "2024-04-23T13:57:16.038Z",
+        "id": "662708cd45326f0ccd61d4d5"
+      },
+      {
+        "name": "cam.mp3",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662708cd45326f0ccd61d4d0",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/c86022d7-af00-41d3-b329-3c7d78868362.mp3",
+        "updatedAt": "2024-04-23T13:57:16.038Z",
+        "createdAt": "2024-04-23T13:57:16.038Z",
+        "isSelectedFile": false,
+        "id": "662708cd45326f0ccd61d4d0"
+      },
+      {
+        "name": "background.mp3",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662708cd45326f0ccd61d4cf",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/91f36c18-9e48-4900-8bc1-f95c0c094c2c.mp3",
+        "updatedAt": "2024-04-23T13:57:16.038Z",
+        "createdAt": "2024-04-23T13:57:16.038Z",
+        "isSelectedFile": false,
+        "id": "662708cd45326f0ccd61d4cf"
+      },
+      {
+        "name": "sticker1.jpeg",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662708cd45326f0ccd61d4d4",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/19db52ee-8ac5-47f2-867f-631ede78def7.jpeg",
+        "updatedAt": "2024-04-23T13:57:16.038Z",
+        "createdAt": "2024-04-23T13:57:16.038Z",
+        "isSelectedFile": false,
+        "id": "662708cd45326f0ccd61d4d4"
+      },
+      {
+        "name": "font.otf",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662708cd45326f0ccd61d4d1",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/e5d99371-9da1-4414-b6a4-e9949b98ec1b.otf",
+        "updatedAt": "2024-04-23T13:57:16.038Z",
+        "createdAt": "2024-04-23T13:57:16.038Z",
+        "isSelectedFile": false,
+        "id": "662708cd45326f0ccd61d4d1"
+      }
+    ],
+    "createdAt": "2024-04-23T01:03:10.460Z",
+    "updatedAt": "2024-04-23T13:57:16.038Z",
+    "id": "wRGzcNFRu"
+  },
+  {
+    "name": "ims06-chlo.",
+    "_id": "q38GhePJ8",
+    "files": [
+      {
+        "name": "root",
+        "content": "",
+        "children": [
+          "6627bf524e303808624dfac7",
+          "6627bf524e303808624dfac8",
+          "6630542f9ae07e00191907fc",
+          "6627bf524e303808624dfac9",
+          "6627bf524e303808624dfaca",
+          "663053699ae07e001918fa15",
+          "663044b7de65c60019456a63",
+          "6627bf524e303808624dfacb",
+          "6627bf524e303808624dfacc",
+          "6627bf524e303808624dfacd"
+        ],
+        "fileType": "folder",
+        "_id": "6627bf524e303808624dfac6",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-30T09:26:37.554Z",
+        "updatedAt": "2024-04-30T09:26:37.554Z",
+        "id": "6627bf524e303808624dfac6"
+      },
+      {
+        "name": "sketch.js",
+        "content": "//https://editor.p5js.org/kg3171/sketches/q38GhePJ8\n//ims06-chlo.\n\nlet capture;\nlet button;\nlet camerasound;\nlet timeSelect;\nlet filterSelect;\nlet interval = 3000;\nlet mode = \"start\";\nlet selectedFilter = \"none\";\nlet backgroundMusic;\nlet frameColor = \"#7fff00\";\nlet colorSelect;\nlet userInput;\nlet countdownTime = 0;\nlet showTimer = false;\nlet startOverButton;\nlet butt1; // Define butt1 variable\nlet selectedImage = null;\n\nlet emojis = ['🌷', '🌿', '🩰', '🍼', '🍡', '👻', '💖', '🌟', '🫧', '🌸', '🎏','⛄️','🫐','🍓','🧾','🃏','🧊','🍰','🦢','🌊','🎈', '🧸','🛒','🎀','🎁','🔫','💕','🖍','🎧','🧃','🎂','🍅','🥑','🍊',''];\n\nfunction preload() {\n    camerasound = loadSound(\"cam.mp3\");\n    backgroundMusic = loadSound(\"background.mp3\");\n    font = loadFont(\"font.otf\");\n\n}\n\nfunction setup() {\n    createCanvas(320, 960);\n    capture = createCapture(VIDEO);\n    capture.size(320, 240);\n    capture.hide();\n\n    colorSelect = createSelect();\n    colorSelect.position(400, 90);\n    colorSelect.option(\"Green\", \"#7fff00\");\n    colorSelect.option('Black', '#000000');\n    colorSelect.option('Pink', '#FFC0CB');\n    colorSelect.option('Blue', '#1493ff');\n    colorSelect.option('Gray', '#dbe2e9');\n    colorSelect.option('Orange', '#ffa500');\n    colorSelect.option('DarkPink', '#ff69b4');\n    colorSelect.changed(() => (frameColor = colorSelect.value()));\n\n    timeSelect = createSelect();\n    timeSelect.position(400, 10);\n    timeSelect.option(\"3 seconds\", 3000);\n    timeSelect.option(\"7 seconds\", 7000);\n    timeSelect.option(\"10 seconds\", 10000);\n    timeSelect.changed(() => (interval = timeSelect.value()));\n\n    filterSelect = createSelect();\n    filterSelect.position(400, 50);\n    filterSelect.option(\"None\", \"none\");\n    filterSelect.option(\"Posterize\", \"posterize\");\n    filterSelect.option(\"Blur\", \"blur\");\n    filterSelect.option(\"Threshold\", \"threshold\");\n    filterSelect.option(\"Black&White\", \"blackwhite\");\n    filterSelect.changed(() => (selectedFilter = filterSelect.value()));\n\n    button = createButton(\"Press To Start\");\n    button.position(405, 240);\n    button.mousePressed(getready);\n\n    startOverButton = createButton(\"Start Over\");\n    startOverButton.position(405, 200);\n    startOverButton.mousePressed(startOver);\n\n    if (!backgroundMusic.isPlaying()) {\n        backgroundMusic.loop();\n    }\n\n    userInput = createInput(\"\");\n    userInput.position(400, 130);\n    userInput.attribute(\"placeholder\", \"Type text here\");\n}\n\n\n\nfunction draw() {\n    push(); // Always save the drawing state at the start\n    translate(width, 0); // Move the origin to mirror the image\n    scale(-1, 1); // Scale negatively on the x-axis to flip/mirror the image\n\n    image(capture, 0, 0); // Display the mirrored image\n\n    if (selectedFilter !== \"none\") {\n        applyFilter(); // Apply filters only when not \"none\"\n    }\n\n    if (mode === \"done\") {\n        drawOldFashionedFrame(); // Additional UI elements\n    }\n\n    pop(); // Restore original state after every frame\n}\nfunction applyFilter() {\n    switch (selectedFilter) {\n        case \"posterize\":\n            filter(POSTERIZE, 3);\n            break;\n        case \"blur\":\n            filter(BLUR, 3);\n            break;\n        case \"threshold\":\n            filter(THRESHOLD);\n            break;\n        case \"blackwhite\":\n            filter(GRAY);\n            break;\n    }\n}\n\nfunction getready() {\n    button.hide();\n    setTimeout(pic, interval);\n}\n\nfunction drawRandomEmoji() {\n    const numberOfEmojis = round(random(15, 30)); // Increased number of emojis for the whole strip\n    textSize(25); // Set the emoji size\n\n    for (let i = 0; i < numberOfEmojis; i++) {\n        let emoji = random(emojis); // Select a random emoji\n        let xPos = random(20, 300); // Randomize the x position between 20 and 300\n        let yPos = random(20, 940); // Randomize the y position across the whole canvas height\n        text(emoji, xPos, yPos); // Draw the emoji at the random position\n    }\n}\n\nfunction pic() {\n    push(); // Mirror each capture\n    translate(width, 0);\n    scale(-1, 1);\n    image(capture, 0, 240);\n    pop();\n    mode = \"pic1\";\n    setTimeout(nextpic, interval);\n}\n\nfunction startOver() {\n    mode = \"start\";\n    userInput.value(\"\");\n    button.show();\n    butt1.hide();\n}\n\nfunction nextpic() {\n    if (mode == \"pic1\") {\n        push();\n        translate(width, 0);\n        scale(-1, 1);\n        image(capture, 0, 480);\n        pop();\n        mode = \"pic2\";\n        setTimeout(lastpic, interval);\n    }\n}\n\nfunction lastpic() {\n    if (mode == \"pic2\") {\n        push();\n        translate(width, 0);\n        scale(-1, 1);\n        image(capture, 0, 720);\n        pop();\n        mode = \"done\";\n        setTimeout(done, interval);\n    }\n}\n\nfunction done() {\n  \n   if (mode == \"done\") {\n    mode = \"stop\";\n    image(capture, 0, 960);\n   }\n  \n  let userText = userInput.value(); // Get the text from the input\n    fill(0); // Text color\n    textSize(30); // Text size\n    textAlign(CENTER, BOTTOM);\n    textFont(font);\n    text(userText, width / 2, 970 - 10); // Position the text at the bottom\n\n    drawRandomEmoji(); // Draw emojis across the entire photo strip\n    setTimeout(() => {\n        end();\n        butt1.show();\n    }, 500);\n}\n\nfunction end() {\n    camerasound.stop();\n    butt1 = createButton(\"Save\");\n    butt1.position(405, 240);\n    butt1.mousePressed(savepic);\n    backgroundMusic.stop();\n}\n\nfunction savepic() {\n    save(\"myCanvas.png\");\n}\n\nfunction drawOldFashionedFrame() {\n    noFill();\n    stroke(frameColor);\n    strokeWeight(35);\n    rect(0, 0, 320, 960);\n}",
+        "children": [],
+        "fileType": "file",
+        "_id": "6627bf524e303808624dfacb",
+        "isSelectedFile": true,
+        "createdAt": "2024-04-30T09:26:37.554Z",
+        "updatedAt": "2024-04-30T09:26:37.554Z",
+        "id": "6627bf524e303808624dfacb"
+      },
+      {
+        "name": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n    <meta charset=\"utf-8\" />\n\n  </head>\n  <body>\n    <main>\n    </main>\n    <script src=\"sketch.js\"></script>\n  </body>\n</html>",
+        "children": [],
+        "fileType": "file",
+        "_id": "6627bf524e303808624dfaca",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-30T09:26:37.554Z",
+        "updatedAt": "2024-04-30T09:26:37.554Z",
+        "id": "6627bf524e303808624dfaca"
+      },
+      {
+        "name": "style.css",
+        "content": "html, body {\n  margin: 0;\n  padding: 0;\n}\ncanvas {\n  display: block;\n}\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "6627bf524e303808624dfacd",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-30T09:26:37.554Z",
+        "updatedAt": "2024-04-30T09:26:37.554Z",
+        "id": "6627bf524e303808624dfacd"
+      },
+      {
+        "name": "cam.mp3",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "6627bf524e303808624dfac8",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/03a06ea3-d1c7-407d-b5c7-8db54d167a26.mp3",
+        "updatedAt": "2024-04-30T09:26:37.554Z",
+        "createdAt": "2024-04-30T09:26:37.554Z",
+        "isSelectedFile": false,
+        "id": "6627bf524e303808624dfac8"
+      },
+      {
+        "name": "background.mp3",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "6627bf524e303808624dfac7",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/3497a055-19b5-4c4b-ae90-10608c18384c.mp3",
+        "updatedAt": "2024-04-30T09:26:37.554Z",
+        "createdAt": "2024-04-30T09:26:37.554Z",
+        "isSelectedFile": false,
+        "id": "6627bf524e303808624dfac7"
+      },
+      {
+        "name": "sticker1.jpeg",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "6627bf524e303808624dfacc",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/4ee40f16-0551-4c34-b30e-6e7307e38b1c.jpeg",
+        "updatedAt": "2024-04-30T09:26:37.554Z",
+        "createdAt": "2024-04-30T09:26:37.554Z",
+        "isSelectedFile": false,
+        "id": "6627bf524e303808624dfacc"
+      },
+      {
+        "name": "font.otf",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "6627bf524e303808624dfac9",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/68df6ef7-34a9-4d76-ab68-376f6349455e.otf",
+        "updatedAt": "2024-04-30T09:26:37.554Z",
+        "createdAt": "2024-04-30T09:26:37.554Z",
+        "isSelectedFile": false,
+        "id": "6627bf524e303808624dfac9"
+      },
+      {
+        "name": "shin.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "663044b7de65c60019456a63",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/284f5e07-8f5c-4a5f-8d4d-9fe7aa33e1ce.png",
+        "updatedAt": "2024-04-30T09:26:37.554Z",
+        "createdAt": "2024-04-30T09:26:37.554Z",
+        "isSelectedFile": false,
+        "id": "663044b7de65c60019456a63"
+      },
+      {
+        "name": "phone.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "663053699ae07e001918fa15",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/e3a5059a-9dd8-4bc7-bc30-9cdb5d88030e.png",
+        "updatedAt": "2024-04-30T09:26:37.554Z",
+        "createdAt": "2024-04-30T09:26:37.554Z",
+        "isSelectedFile": false,
+        "id": "663053699ae07e001918fa15"
+      },
+      {
+        "name": "doodle.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "6630542f9ae07e00191907fc",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/64c32bca-0de9-423a-a15e-f11a7b1f4f46.png",
+        "updatedAt": "2024-04-30T09:26:37.554Z",
+        "createdAt": "2024-04-30T09:26:37.554Z",
+        "isSelectedFile": false,
+        "id": "6630542f9ae07e00191907fc"
+      }
+    ],
+    "createdAt": "2024-04-23T14:01:56.600Z",
+    "updatedAt": "2024-04-30T09:26:37.554Z",
+    "id": "q38GhePJ8"
+  },
+  {
+    "name": "ims06-chlo. copy",
+    "_id": "FKoVzAN9H",
+    "files": [
+      {
+        "name": "root",
+        "content": "",
+        "children": [
+          "663019a3029db1149a534161",
+          "663019a3029db1149a534162",
+          "663019a3029db1149a534163",
+          "663019a3029db1149a534164",
+          "663019a3029db1149a534165",
+          "663019a3029db1149a534166",
+          "663019a3029db1149a534167"
+        ],
+        "fileType": "folder",
+        "_id": "663019a3029db1149a534160",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-23T14:56:43.587Z",
+        "updatedAt": "2024-04-23T14:56:43.587Z",
+        "id": "663019a3029db1149a534160"
+      },
+      {
+        "name": "sketch.js",
+        "content": "//https://editor.p5js.org/kg3171/sketches/q38GhePJ8\n//ims06-chlo.\n\nlet capture;\nlet button;\nlet camerasound;\nlet timeSelect; \nlet filterSelect; \nlet interval = 3000; \nlet mode = \"start\";\nlet selectedFilter = \"none\"; \nlet backgroundMusic;\nlet frameColor = '#7fff00';\nlet colorSelect;\nlet userInput;\nlet countdownTime = 0;\nlet showTimer = false;\n\nlet nostalgicMessages = [\n    \"🥑🐢🍄🧃🔫\",\n    \"🌷🍰🍓🧷🎀\",\n    \"🫧🧋🦢🎧🕶️\",\n    \"🌸🍡🩰🎀🛍\",\n    \"🧾🥣🍼🧊🥚\",\n    \"🫐🎏⛄️🌊🦋\"\n];\n\nfunction preload() {\n  camerasound = loadSound('cam.mp3');\n  backgroundMusic = loadSound('background.mp3');\n  font = loadFont('font.otf');\n}\n\nfunction setup() {\n  createCanvas(320, 960);\n  capture = createCapture(VIDEO);\n  capture.size(320, 240);\n  capture.hide();\n  \n  colorSelect = createSelect();\n  colorSelect.position(400, 90);\n  colorSelect.option('Green', '#7fff00');\n  colorSelect.option('Black', '#000000');\n  colorSelect.option('Pink', '#FFC0CB');\n  colorSelect.option('Blue', '#1493ff');\n  colorSelect.option('Gray', '#dbe2e9');\n  colorSelect.option('Orange', '#ffa500');\n  colorSelect.option('DarkPink', '#ff69b4');\n  colorSelect.changed(() => frameColor = colorSelect.value());\n\n  // Time selection dropdown\n  timeSelect = createSelect();\n  timeSelect.position(400, 10);\n  timeSelect.option('3 seconds', 3000);\n  timeSelect.option('7 seconds', 7000);\n  timeSelect.option('10 seconds', 10000);\n  timeSelect.changed(() => interval = timeSelect.value());\n\n  // Filter selection dropdown\n  filterSelect = createSelect();\n  filterSelect.position(400, 50);\n  filterSelect.option('None', 'none');\n  filterSelect.option('Posterize', 'posterize');\n  filterSelect.option('Blur', 'blur');\n  filterSelect.option('Threshold', 'threshold');\n  filterSelect.option('Black&White', 'blackwhite');\n  filterSelect.changed(() => selectedFilter = filterSelect.value());\n\n  button = createButton('Press To Start');\n  button.position(250, 240);\n  button.mousePressed(getready);\n  \n  if (!backgroundMusic.isPlaying()) {\n    backgroundMusic.loop();\n    \n    userInput = createInput('');\n    userInput.position(400, 130); \n    userInput.attribute('placeholder', 'Type text here');\n  \n}\n}\n\nfunction draw() {\n  if (mode == 'start') {\n    translate(width, 0);\n    scale(-1, 1);\n    image(capture, 0, 0);\n}\n  else if (mode=='pic1'){\n    translate(width,0);\n  scale(-1, 1);\n  image(capture, 0, 0); \n    \n  }\n  else if (mode=='pic2'){\n    translate(width,0);\n  scale(-1, 1);\n  image(capture, 0, 0); \n  }\n  else if (mode=='done'){\n    translate(width,0);\n  scale(-1, 1);\n  image(capture, 0, 0); \n    \n    \n    drawOldFashionedFrame();\n    displayNostalgicMessage(); \n    \n  }\n  \n    switch (selectedFilter) {\n    case 'posterize':\n      filter(POSTERIZE, 3);\n      break;\n    case 'blur':\n      filter(BLUR, 3);\n      break;\n    case 'threshold':\n      filter(THRESHOLD);\n      break;\n    case 'blackwhite':\n        filter(GRAY);\n        break;\n  }\n\n  }\n\nfunction getready() {\n  button.hide();\n  setTimeout(pic, interval); \n}\n\nfunction pic() {\n  image(capture, 0, 240);\n  mode = \"pic1\";\n  setTimeout(nextpic, interval);\n}\n\nfunction nextpic() {\n  if (mode == \"pic1\") {\n    mode = \"pic2\";\n    image(capture, 0, 480);\n    setTimeout(lastpic, interval);\n  }\n}\n\nfunction lastpic() {\n  if (mode == \"pic2\") {\n    mode = \"done\";\n    image(capture, 0, 720);\n    setTimeout(done, interval);\n  }\n}\n\nfunction done() {\n  if (mode == \"done\") {\n    mode = \"stop\";\n    image(capture, 0, 960); \n\n    let userText = userInput.value(); \n    fill(0); // Text color\n    textSize(30); // Text size\n    textAlign(CENTER, BOTTOM);\n    textFont(font);\n    text(userText, width / 2, 970 - 10); \n\n    setTimeout(end, 500);\n  }\n}\n\n\nfunction end(){\n  camerasound.stop();\n   butt1=createButton('Save');\n    butt1.position(300,240);\n    butt1.mousePressed(savepic);\n  \n  backgroundMusic.stop();\n\n\n}\nfunction savepic(){\n  save('myCanvas.png');\n\n}\n\nfunction displayNostalgicMessage() {\n    let message = nostalgicMessages[Math.floor(Math.random() * nostalgicMessages.length)];\n\n    textSize(30); \n    textAlign(CENTER, CENTER);\n    \n    fill(211, 245, 245); \n    noStroke();\n    rect(0, capture.height + 30, width, 40); \n\n    fill(0); // Black text\n\n    translate(width, 0);\n    scale(-1, 1);\n\n    text(message, width / 2, capture.height + 50);\n\n    resetMatrix();\n}\n\nfunction drawOldFashionedFrame() {\n  noFill();\n  stroke(frameColor);\n  strokeWeight(35);\n  rect(0, 0, 320, 960);\n}\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "663019a3029db1149a534165",
+        "isSelectedFile": true,
+        "createdAt": "2024-04-23T14:56:43.587Z",
+        "updatedAt": "2024-04-23T14:56:43.587Z",
+        "id": "663019a3029db1149a534165"
+      },
+      {
+        "name": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n    <meta charset=\"utf-8\" />\n\n  </head>\n  <body>\n    <main>\n    </main>\n    <script src=\"sketch.js\"></script>\n  </body>\n</html>\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "663019a3029db1149a534164",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-23T14:56:43.587Z",
+        "updatedAt": "2024-04-23T14:56:43.587Z",
+        "id": "663019a3029db1149a534164"
+      },
+      {
+        "name": "style.css",
+        "content": "html, body {\n  margin: 0;\n  padding: 0;\n}\ncanvas {\n  display: block;\n}\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "663019a3029db1149a534167",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-23T14:56:43.587Z",
+        "updatedAt": "2024-04-23T14:56:43.587Z",
+        "id": "663019a3029db1149a534167"
+      },
+      {
+        "name": "cam.mp3",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "663019a3029db1149a534162",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/cf371830-6304-44d3-8607-f2afe207f741.mp3",
+        "updatedAt": "2024-04-23T14:56:43.587Z",
+        "createdAt": "2024-04-23T14:56:43.587Z",
+        "isSelectedFile": false,
+        "id": "663019a3029db1149a534162"
+      },
+      {
+        "name": "background.mp3",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "663019a3029db1149a534161",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/8f15df6e-905b-4eba-bafd-40a3706ff26c.mp3",
+        "updatedAt": "2024-04-23T14:56:43.587Z",
+        "createdAt": "2024-04-23T14:56:43.587Z",
+        "isSelectedFile": false,
+        "id": "663019a3029db1149a534161"
+      },
+      {
+        "name": "sticker1.jpeg",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "663019a3029db1149a534166",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/e8b9a71b-f502-4ef9-a6d7-cb30daf8d25c.jpeg",
+        "updatedAt": "2024-04-23T14:56:43.587Z",
+        "createdAt": "2024-04-23T14:56:43.587Z",
+        "isSelectedFile": false,
+        "id": "663019a3029db1149a534166"
+      },
+      {
+        "name": "font.otf",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "663019a3029db1149a534163",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/11105534-b987-4ade-ab96-d8c264fe74f7.otf",
+        "updatedAt": "2024-04-23T14:56:43.587Z",
+        "createdAt": "2024-04-23T14:56:43.587Z",
+        "isSelectedFile": false,
+        "id": "663019a3029db1149a534163"
+      }
+    ],
+    "createdAt": "2024-04-29T22:05:28.393Z",
+    "updatedAt": "2024-04-29T22:05:28.393Z",
+    "id": "FKoVzAN9H"
+  },
+  {
     "name": "interface",
     "_id": "FAK45cDb0",
     "files": [
@@ -955,6 +1321,241 @@
     "id": "FAK45cDb0"
   },
   {
+    "name": "level 1",
+    "_id": "YaAoR6LqD",
+    "updatedAt": "2024-04-29T12:18:02.167Z",
+    "files": [
+      {
+        "name": "root",
+        "content": "",
+        "children": [
+          "662f7cbf57dbb96548564459",
+          "662f8fa1a7c5e40019b5f5f7",
+          "662f7d47c4e55c00198637d8",
+          "662f7cbf57dbb96548564458",
+          "662f7cbf57dbb9654856445a"
+        ],
+        "fileType": "folder",
+        "_id": "662f7cbf57dbb9654856445b",
+        "createdAt": "2024-04-29T12:18:02.167Z",
+        "updatedAt": "2024-04-29T12:18:02.167Z",
+        "isSelectedFile": false,
+        "id": "662f7cbf57dbb9654856445b"
+      },
+      {
+        "name": "sketch.js",
+        "content": "let characterImg;\nlet characterX, characterY;\nlet characterVY = 0; // Velocity in the Y direction\nlet gravity = 0.5; // Strength of gravity\nlet jumping = false; // Is the character currently jumping?\nlet levelCompleteZone;\nlet platforms = [];\nlet actualHeight = 120; // Adjust this to the actual height of the image\nlet boxImg;\n\nfunction preload() {\n  characterImg = loadImage('shin.png');\n  boxImg = loadImage('playground.png');\n}\n\nfunction setup() {\n  createCanvas(800, 600);\n  characterX = 0;\n  characterY = height - 120;\n  levelCompleteZone = { x: width - 100, y: height - 100, width: 50, height: 50 };\n\n  // Define platforms\n  platforms.push({ x: 300, y: 490, width: 100, height: 20 });\n  platforms.push({ x: 500, y: 390, width: 150, height: 20 });\n}\n\nfunction draw() {\n  background(135, 206, 235);\n\n  fill(0, 128, 0);\n  rect(0, height - 50, width, 50);\n\n    image(boxImg, levelCompleteZone.x, levelCompleteZone.y, levelCompleteZone.width, levelCompleteZone.height);\n\n  // Draw platforms\n  fill(169, 169, 169); // Grey color for platforms\n  for (let plat of platforms) {\n    rect(plat.x, plat.y, plat.width, plat.height);\n  }\n\n  // Character physics\n  characterVY += gravity;\n  characterY += characterVY;\n\n  // Collision with ground\n  if (characterY > height - 120) {\n    characterY = height - 120;\n    characterVY = 0;\n    jumping = false;\n  }\n// Collision with platforms\nfor (let plat of platforms) {\n    if (characterX + 100 > plat.x && characterX < plat.x + plat.width) { // Check horizontal overlap\n        if (characterVY > 0 && characterY + actualHeight >= plat.y && characterY + actualHeight <= plat.y + 20) {\n            // Only adjust position if character is falling down (characterVY > 0)\n            characterY = plat.y - actualHeight; // Adjust Y so character stands right on the platform\n            characterVY = 0;\n            jumping = false;\n        }\n    }\n}\n\n  image(characterImg, characterX, characterY, 100, actualHeight);\n\nif (characterX + 100 >= levelCompleteZone.x && characterX <= levelCompleteZone.x + levelCompleteZone.width &&\n    characterY + actualHeight >= levelCompleteZone.y && characterY <= levelCompleteZone.y + levelCompleteZone.height) {\n  displayQuestion();\n}\n}\n\nfunction keyPressed() {\n  if (keyCode === LEFT_ARROW) {\n    characterX -= 10;\n  } else if (keyCode === RIGHT_ARROW) {\n    characterX += 10;\n  } else if (keyCode === UP_ARROW && !jumping) {\n    characterVY = -10; // Jumping velocity\n    jumping = true;\n  } else if (keyCode === DOWN_ARROW) {\n    characterY += 10;\n  }\n}\n\nfunction displayQuestion() {\n  noLoop(); // Stop drawing to freeze the game\n  let userAnswer = prompt(\"What is the essence of love?\"); // Sample question\n  if (userAnswer.toLowerCase() === \"kindness\") { // Check answer\n    alert(\"Correct! Moving to next level.\");\n    characterX = 50; // Reset position or move to next level\n    characterY = height - 100;\n    loop(); // Resume game loop\n  } else {\n    alert(\"Try again!\");\n    loop(); // Resume game loop\n  }\n}\n\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f7cbf57dbb96548564458",
+        "isSelectedFile": true,
+        "createdAt": "2024-04-29T12:18:02.167Z",
+        "updatedAt": "2024-04-29T12:18:02.167Z",
+        "id": "662f7cbf57dbb96548564458"
+      },
+      {
+        "name": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n    <meta charset=\"utf-8\" />\n\n  </head>\n  <body>\n    <main>\n    </main>\n    <script src=\"sketch.js\"></script>\n  </body>\n</html>\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f7cbf57dbb96548564459",
+        "createdAt": "2024-04-29T12:18:02.167Z",
+        "updatedAt": "2024-04-29T12:18:02.167Z",
+        "isSelectedFile": false,
+        "id": "662f7cbf57dbb96548564459"
+      },
+      {
+        "name": "style.css",
+        "content": "html, body {\n  margin: 0;\n  padding: 0;\n}\ncanvas {\n  display: block;\n}\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f7cbf57dbb9654856445a",
+        "createdAt": "2024-04-29T12:18:02.167Z",
+        "updatedAt": "2024-04-29T12:18:02.167Z",
+        "isSelectedFile": false,
+        "id": "662f7cbf57dbb9654856445a"
+      },
+      {
+        "name": "shin.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f7d47c4e55c00198637d8",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/c8bf6ca6-670e-402d-a74d-bd6e3809e155.png",
+        "updatedAt": "2024-04-29T12:18:02.167Z",
+        "createdAt": "2024-04-29T12:18:02.167Z",
+        "isSelectedFile": false,
+        "id": "662f7d47c4e55c00198637d8"
+      },
+      {
+        "name": "playground.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f8fa1a7c5e40019b5f5f7",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/54477e79-fc01-4920-a78d-3b511842596f.png",
+        "isSelectedFile": false,
+        "updatedAt": "2024-04-29T12:18:02.167Z",
+        "createdAt": "2024-04-29T12:18:02.167Z",
+        "id": "662f8fa1a7c5e40019b5f5f7"
+      }
+    ],
+    "createdAt": "2024-04-29T10:56:11.341Z",
+    "id": "YaAoR6LqD"
+  },
+  {
+    "name": "Level 1 - Love Quest",
+    "_id": "5AYDZB1Aff",
+    "updatedAt": "2024-04-29T10:52:30.946Z",
+    "files": [
+      {
+        "name": "root",
+        "content": "",
+        "children": [
+          "662f7aad57dbb96548564455",
+          "662f7af0c4e55c00198563e0",
+          "662f7aad57dbb96548564454",
+          "662f7aad57dbb96548564456"
+        ],
+        "fileType": "folder",
+        "_id": "662f7aad57dbb96548564457",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-29T10:52:30.946Z",
+        "updatedAt": "2024-04-29T10:52:30.946Z",
+        "id": "662f7aad57dbb96548564457"
+      },
+      {
+        "name": "sketch.js",
+        "content": "let player;\nlet ground;\nlet gravity = 0.6;  // Slightly adjusted for better realism\nlet jump = -15;\nlet playerImg;\n\nfunction preload() {\n  playerImg = loadImage('shin.png', () => {\n    console.log(\"Image loaded successfully\");\n    player = new Player(); // Initialize player here only after image is confirmed to be loaded\n  }, (error) => {\n    console.error(\"Failed to load image:\", error);\n  });\n}\n\nfunction setup() {\n  createCanvas(800, 500);\n  ground = height - 50;\n  // Check if player has been initialized, if not, initialize or handle the case\n  if (!player) {\n    console.log(\"Waiting for image to load before initializing player.\");\n  }\n}\n\n\nfunction draw() {\n  background(135, 206, 235);  // Clear background each frame\n  fill(0, 155, 0);  // Green ground\n  rect(0, ground, width, 50);  // Draw ground\n\n  player.update();\n  player.display();  // Make sure player is always drawn last to be on top\n}\n\nfunction keyPressed() {\n  if (keyCode === UP_ARROW) {\n    player.jump();\n  }\n}\n\nclass Player {\n    constructor() {\n        this.x = 50;\n        this.y = ground - 30;\n        this.vy = 0;\n        this.gravity = 0.6;\n        this.img = playerImg;  // Hold reference to the loaded image\n\n        // Initialize width and height to undefined or a default value\n        this.width = undefined;\n        this.height = undefined;\n    }\n\n    update() {\n        this.vy += this.gravity;\n        this.y += this.vy;\n        this.y = constrain(this.y, 0, ground - (this.height || 30));  // Use 30 as a placeholder if height is undefined\n    }\n\n    display() {\n        // Calculate width and height if not already set and if the image is fully loaded\n        if (!this.width && this.img.width > 0) {\n            this.width = this.img.width / 2;\n            this.height = this.img.height / 2;\n        }\n\n        // Ensure width and height have been set before trying to display the image\n        if (this.width && this.height) {\n            image(this.img, this.x - this.width / 2, this.y - this.height, this.width, this.height);\n        }\n    }\n\n    jump() {\n        if (this.y >= ground - (this.height || 30)) {  // Use 30 as a placeholder if height is undefined\n            this.vy = -15;  // Jump force\n        }\n    }\n}\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f7aad57dbb96548564454",
+        "isSelectedFile": true,
+        "createdAt": "2024-04-29T10:52:30.946Z",
+        "updatedAt": "2024-04-29T10:52:30.946Z",
+        "id": "662f7aad57dbb96548564454"
+      },
+      {
+        "name": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Adventure Game</title>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n</head>\n<body>\n    <script src=\"sketch.js\"></script>\n\n</body>\n</html>\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f7aad57dbb96548564455",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-29T10:52:30.946Z",
+        "updatedAt": "2024-04-29T10:52:30.946Z",
+        "id": "662f7aad57dbb96548564455"
+      },
+      {
+        "name": "style.css",
+        "content": "html, body {\n  margin: 0;\n  padding: 0;\n}\ncanvas {\n  display: block;\n}\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f7aad57dbb96548564456",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-29T10:52:30.946Z",
+        "updatedAt": "2024-04-29T10:52:30.946Z",
+        "id": "662f7aad57dbb96548564456"
+      },
+      {
+        "name": "shin.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f7af0c4e55c00198563e0",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/1af56811-466a-4d55-bb88-61571967590a.png",
+        "updatedAt": "2024-04-29T10:52:30.946Z",
+        "createdAt": "2024-04-29T10:52:30.946Z",
+        "id": "662f7af0c4e55c00198563e0"
+      }
+    ],
+    "createdAt": "2024-04-29T10:47:41.947Z",
+    "id": "5AYDZB1Aff"
+  },
+  {
+    "name": "level 1 final",
+    "_id": "C1AXypwG2",
+    "files": [
+      {
+        "name": "root",
+        "content": "",
+        "children": [
+          "662f90838714d52d40795952",
+          "662f90838714d52d40795953",
+          "662f90838714d52d40795954",
+          "662f90838714d52d40795955",
+          "662f90838714d52d40795956"
+        ],
+        "fileType": "folder",
+        "_id": "662f90838714d52d40795951",
+        "createdAt": "2024-04-29T12:52:26.507Z",
+        "updatedAt": "2024-04-29T12:52:26.507Z",
+        "isSelectedFile": false,
+        "id": "662f90838714d52d40795951"
+      },
+      {
+        "name": "sketch.js",
+        "content": "let characterImg;\nlet characterX, characterY;\nlet characterVY = 0; // Velocity in the Y direction\nlet gravity = 0.5; // Strength of gravity\nlet jumping = false; // Is the character currently jumping?\nlet levelCompleteZone;\nlet platforms = [];\nlet actualHeight = 120; // Adjust this to the actual height of the image\nlet boxImg; \nlet triggerX = 585; // X-coordinate of the trigger area\nlet triggerY = 200; // Y-coordinate of the trigger area\nlet triggerWidth = 300; // Width of the trigger area\nlet triggerHeight = 100;\n\nfunction preload() {\n  characterImg = loadImage('shin.png');\n  boxImg = loadImage('playground.png');\n}\n\nfunction setup() {\n  createCanvas(800, 600);\n  characterX = 0;\n  characterY = height - 120;\n  levelCompleteZone = { x: width - 190, y: height - 260, width: 200, height: 280 };\n\n  // Increase size by 50%\n  let sizing = 2;\n  levelCompleteZone.width *= sizing;\n  levelCompleteZone.height *= sizing;\n\n  // Adjust position to keep the box centered at its original location\n  levelCompleteZone.x -= (levelCompleteZone.width * sizing - levelCompleteZone.width) / 2;\n  levelCompleteZone.y -= (levelCompleteZone.height * sizing - levelCompleteZone.height) / 2;\n\n  // Define platforms\n  platforms.push({ x: 300, y: 490, width: 100, height: 20 });\n  platforms.push({ x: 500, y: 390, width: 150, height: 20 });\n}\n\n\nfunction draw() {\n  background(135, 206, 235);\n\n  fill(0, 128, 0);\n  rect(0, height - 50, width, 50);\n\n  // Draw the enlarged image\n  image(boxImg, levelCompleteZone.x, levelCompleteZone.y, levelCompleteZone.width, levelCompleteZone.height);\n\n  // Draw platforms\n  fill(169, 169, 169); // Grey color for platforms\n  for (let plat of platforms) {\n    rect(plat.x, plat.y, plat.width, plat.height);\n  }\n\n  // Character physics\n  characterVY += gravity;\n  characterY += characterVY;\n\n  // Collision with ground\n  if (characterY > height - 120) {\n    characterY = height - 120;\n    characterVY = 0;\n    jumping = false;\n  }\n\n  // Collision with platforms\n  for (let plat of platforms) {\n    if (characterX + 100 > plat.x && characterX < plat.x + plat.width) { // Check horizontal overlap\n      if (characterVY > 0 && characterY + actualHeight >= plat.y && characterY + actualHeight <= plat.y + 20) {\n        // Only adjust position if character is falling down (characterVY > 0)\n        characterY = plat.y - actualHeight; // Adjust Y so character stands right on the platform\n        characterVY = 0;\n        jumping = false;\n      }\n    }\n  }\n\n  // Draw the character\n  image(characterImg, characterX, characterY, 100, actualHeight);\n\n  // Check if the character is within the boundaries of the image\nif (\n    characterX >= triggerX &&\n    characterX <= triggerX + triggerWidth &&\n    characterY + actualHeight >= triggerY &&\n    characterY <= triggerY + triggerHeight\n  ) {\n    displayQuestion();\n  }\n}\n\nfunction keyPressed() {\n  if (keyCode === LEFT_ARROW) {\n    characterX -= 10;\n  } else if (keyCode === RIGHT_ARROW) {\n    characterX += 10;\n  } else if (keyCode === UP_ARROW && !jumping) {\n    characterVY = -10; // Jumping velocity\n    jumping = true;\n  } else if (keyCode === DOWN_ARROW) {\n    characterY += 10;\n  }\n}\n\nfunction displayQuestion() {\n  noLoop(); // Stop drawing to freeze the game\n  let userAnswer = prompt(\"What is the essence of love?\"); // Sample question\n  if (userAnswer.toLowerCase() === \"kindness\") { // Check answer\n    alert(\"Correct! Moving to next level.\");\n    characterX = 50; // Reset position or move to next level\n    characterY = height - 100;\n    loop(); // Resume game loop\n  } else {\n    alert(\"Try again!\");\n    loop(); // Resume game loop\n  }\n}\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f90838714d52d40795955",
+        "isSelectedFile": true,
+        "createdAt": "2024-04-29T12:52:26.507Z",
+        "updatedAt": "2024-04-29T12:52:26.507Z",
+        "id": "662f90838714d52d40795955"
+      },
+      {
+        "name": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n    <meta charset=\"utf-8\" />\n\n  </head>\n  <body>\n    <main>\n    </main>\n    <script src=\"sketch.js\"></script>\n  </body>\n</html>\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f90838714d52d40795952",
+        "createdAt": "2024-04-29T12:52:26.507Z",
+        "updatedAt": "2024-04-29T12:52:26.507Z",
+        "isSelectedFile": false,
+        "id": "662f90838714d52d40795952"
+      },
+      {
+        "name": "style.css",
+        "content": "html, body {\n  margin: 0;\n  padding: 0;\n}\ncanvas {\n  display: block;\n}\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f90838714d52d40795956",
+        "createdAt": "2024-04-29T12:52:26.507Z",
+        "updatedAt": "2024-04-29T12:52:26.507Z",
+        "isSelectedFile": false,
+        "id": "662f90838714d52d40795956"
+      },
+      {
+        "name": "shin.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f90838714d52d40795954",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/2fd4990b-d89a-49c3-8218-ed3423122ff3.png",
+        "updatedAt": "2024-04-29T12:52:26.507Z",
+        "createdAt": "2024-04-29T12:52:26.507Z",
+        "isSelectedFile": false,
+        "id": "662f90838714d52d40795954"
+      },
+      {
+        "name": "playground.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f90838714d52d40795953",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/f58ec195-39be-4309-b772-280424eb4d48.png",
+        "isSelectedFile": false,
+        "updatedAt": "2024-04-29T12:52:26.507Z",
+        "createdAt": "2024-04-29T12:52:26.507Z",
+        "id": "662f90838714d52d40795953"
+      }
+    ],
+    "createdAt": "2024-04-29T12:20:20.667Z",
+    "updatedAt": "2024-04-29T12:52:26.507Z",
+    "id": "C1AXypwG2"
+  },
+  {
     "name": "Literate caper",
     "_id": "DH4dbUGoZ",
     "updatedAt": "2022-10-03T19:22:28.678Z",
@@ -1012,6 +1613,704 @@
     "id": "DH4dbUGoZ"
   },
   {
+    "name": "Love Actually",
+    "_id": "Yz2gdVhil",
+    "updatedAt": "2024-04-29T04:20:42.273Z",
+    "files": [
+      {
+        "name": "root",
+        "content": "",
+        "children": [
+          "662ef9cb719c1600198845af",
+          "662f18b0a1d7d3001a050a90",
+          "662f18c4a1d7d3001a050b92",
+          "662ef8a1447684983f510ceb",
+          "662f0f58719c1600198a11e2",
+          "662f1ab6719c1600198ae0eb",
+          "662f061ea1d7d3001a03855f",
+          "662ef8a1447684983f510cea",
+          "662ef8a1447684983f510cec"
+        ],
+        "fileType": "folder",
+        "_id": "662ef8a1447684983f510ced",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "isSelectedFile": false,
+        "id": "662ef8a1447684983f510ced"
+      },
+      {
+        "name": "sketch.js",
+        "content": "let startButton;\nlet instructionsButton;\nlet customFont;\nlet hearts = [];\nconst heartSpeed = 1;\nlet img;\nlet img1;\n\nfunction preload() {\n  customFont = loadFont('Jersey15.ttf');\n  img = loadImage('shinchan.png');\n  img1 = loadImage('playground.png')\n}\n\nfunction setup() {\n    createCanvas(800, 500);\n    background(255, 192, 203);\n\n    // Generate hearts\n    for (let i = 0; i < 20; i++) {\n        hearts.push({\n            x: random(width),\n            y: random(height),\n            size: random(10, 40),\n            speed: heartSpeed\n        });\n    }\n      setupButtons();\n}\n\nfunction setupButtons() {\n    startButton = createButton('Start Game');\n    startButton.position(width / 2 - 50, height / 2);\n    startButton.mousePressed(startGame);\n    startButton.style('background-color', '#F83B9A');\n    startButton.style('color', 'white');\n    startButton.style('padding', '10px 20px');\n    startButton.style('border', 'none');\n    startButton.style('border-radius', '10px');\n    \n    instructionsButton = createButton('Instructions');\n    instructionsButton.position(width / 2 - 50, height / 2 + 50);\n    instructionsButton.mousePressed(showInstructions);\n    instructionsButton.style('background-color', '#FFB6C1');\n    instructionsButton.style('color', 'white');\n    instructionsButton.style('padding', '10px 20px');\n    instructionsButton.style('border', 'none');\n    instructionsButton.style('border-radius', '10px');\n}\n\n\nfunction draw() {\n  background(255, 192, 203); //Redraw background to clear old frames\n  image(img, 30, -720, width * 1.5, height * 4);\n  image(img1, -410, -570, width * 1.5, height * 4);\n  drawHearts();\n  moveHearts();\n  drawTitle(); \n  drawBorder(); \n}\n\nfunction startGame() {\n  window.location.href = 'game.html'; // Redirects to the game page\n}\n\nfunction drawHearts() {\n  for (let heart of hearts) {\n    drawHeart(heart.x, heart.y, heart.size);\n  }\n}\n\nfunction drawHeart(x, y, size) {\n  fill(255, 105, 180);\n  noStroke();\n  beginShape();\n  vertex(x, y);\n  bezierVertex(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);\n  bezierVertex(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);\n  endShape(CLOSE);\n}\n\nfunction moveHearts() {\n  for (let heart of hearts) {\n    heart.y -= heart.speed;\n    if (heart.y < -50) {\n      heart.y = height + 50;\n      heart.x = random(width);\n    }\n  }\n}\n\nfunction drawBorder() {\n  stroke(180, 15, 139); \n  strokeWeight(18); // Set the thickness of the border\n  noFill();\n  rect(0, 0, width, height);\n}\n\nfunction drawTitle() {\n  // Title\n  textSize(75);\n  fill(365, 95, 140);\n  textAlign(CENTER, CENTER);\n  textFont(customFont);\n  text(\"Love Quest\", width / 2, height / 3);\n}\n\nfunction showInstructions() {\n  document.getElementById('instructionsModal').style.display = 'block';\n}\n\nfunction closeInstructions() {\n  document.getElementById('instructionsModal').style.display = 'none';\n}\n\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662ef8a1447684983f510cea",
+        "isSelectedFile": true,
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "id": "662ef8a1447684983f510cea"
+      },
+      {
+        "name": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n    <meta charset=\"utf-8\" />\n\n  </head>\n  <body>\n    <div id=\"instructionsModal\" style=\"display: none; position: fixed; left: 32%; top: 50%; transform: translate(-50%, -50%); background-color: white; border: 8px solid #FCA6B3; padding: 20px; z-index: 1000; width: 300px; border-radius: 40px;\">\n  <h2>Instructions</h2>\n  <p>Your goal for the game is to help the character learn about love and find his love by passing levels and answering questions.</p>\n  <button onclick=\"closeInstructions()\">Close</button>\n</div>\n    <script src=\"sketch.js\"></script>\n  </body>\n</html>\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662ef8a1447684983f510ceb",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "isSelectedFile": false,
+        "id": "662ef8a1447684983f510ceb"
+      },
+      {
+        "name": "style.css",
+        "content": "@import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');\nhtml, body {\n  margin: 0;\n  padding: 0;\n}\ncanvas {\n  display: block;\n}\n\n#instructionsModal h2 {\n  font-family: 'Jersey 15'; /* Specific font for the title */\n}\n\n#instructionsModal p {\n  font-family: 'Jersey 15';\n}",
+        "children": [],
+        "fileType": "file",
+        "_id": "662ef8a1447684983f510cec",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "isSelectedFile": false,
+        "id": "662ef8a1447684983f510cec"
+      },
+      {
+        "name": "Jersey15.ttf",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662ef9cb719c1600198845af",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/f9216c32-78df-45c7-b6f9-185079e1ee61.ttf",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "isSelectedFile": false,
+        "id": "662ef9cb719c1600198845af"
+      },
+      {
+        "name": "shinchan.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f061ea1d7d3001a03855f",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/ad139a6d-b03d-41c7-afde-80a5f30a03d2.png",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "isSelectedFile": false,
+        "id": "662f061ea1d7d3001a03855f"
+      },
+      {
+        "name": "playground.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f0f58719c1600198a11e2",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/74f945e9-2484-40aa-a028-3301a09ccf21.png",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "isSelectedFile": false,
+        "id": "662f0f58719c1600198a11e2"
+      },
+      {
+        "name": "game.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Adventure Game</title>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n</head>\n<body>\n    <script src=\"game_sketch.js\"></script>\n</body>\n</html>\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f18b0a1d7d3001a050a90",
+        "isSelectedFile": false,
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "id": "662f18b0a1d7d3001a050a90"
+      },
+      {
+        "name": "game_sketch.js",
+        "content": "function setup() {\n  createCanvas(800, 500);\n}\n\nfunction draw() {\n  background(255, 0, 0); // Should show a solid red background\n  console.log(\"If this shows in the console, JS is loading correctly.\");\n}\n\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f18c4a1d7d3001a050b92",
+        "isSelectedFile": false,
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "id": "662f18c4a1d7d3001a050b92"
+      },
+      {
+        "name": "shin.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f1ab6719c1600198ae0eb",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/037d5870-2146-48b2-8065-c3e5efa58d2c.png",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "isSelectedFile": false,
+        "id": "662f1ab6719c1600198ae0eb"
+      }
+    ],
+    "createdAt": "2024-04-29T01:32:28.558Z",
+    "id": "Yz2gdVhil"
+  },
+  {
+    "name": "Love Actually copy",
+    "_id": "-HDsCS35f",
+    "files": [
+      {
+        "name": "root",
+        "content": "",
+        "children": [
+          "662f21496780c32e62042e16",
+          "662f21496780c32e62042e17",
+          "662f21496780c32e62042e18",
+          "662f21496780c32e62042e19",
+          "662f21496780c32e62042e1a",
+          "662f21496780c32e62042e1b",
+          "662f21496780c32e62042e1c",
+          "662f21496780c32e62042e1d",
+          "662f21496780c32e62042e1e"
+        ],
+        "fileType": "folder",
+        "_id": "662f21496780c32e62042e15",
+        "createdAt": "2024-04-29T04:27:10.077Z",
+        "updatedAt": "2024-04-29T04:27:10.077Z",
+        "isSelectedFile": false,
+        "id": "662f21496780c32e62042e15"
+      },
+      {
+        "name": "sketch.js",
+        "content": "let startButton;\nlet instructionsButton;\nlet customFont;\nlet hearts = [];\nconst heartSpeed = 1;\nlet img;\nlet img1;\n\nfunction preload() {\n  customFont = loadFont('Jersey15.ttf');\n  img = loadImage('shinchan.png');\n  img1 = loadImage('playground.png')\n}\n\nfunction setup() {\n    createCanvas(800, 500);\n    background(255, 192, 203);\n\n    // Generate hearts\n    for (let i = 0; i < 20; i++) {\n        hearts.push({\n            x: random(width),\n            y: random(height),\n            size: random(10, 40),\n            speed: heartSpeed\n        });\n    }\n      setupButtons();\n}\n\nfunction setupButtons() {\n    startButton = createButton('Start Game');\n    startButton.position(width / 2 - 50, height / 2);\n    startButton.mousePressed(startGame);\n    startButton.style('background-color', '#F83B9A');\n    startButton.style('color', 'white');\n    startButton.style('padding', '10px 20px');\n    startButton.style('border', 'none');\n    startButton.style('border-radius', '10px');\n    \n    instructionsButton = createButton('Instructions');\n    instructionsButton.position(width / 2 - 50, height / 2 + 50);\n    instructionsButton.mousePressed(showInstructions);\n    instructionsButton.style('background-color', '#FFB6C1');\n    instructionsButton.style('color', 'white');\n    instructionsButton.style('padding', '10px 20px');\n    instructionsButton.style('border', 'none');\n    instructionsButton.style('border-radius', '10px');\n}\n\n\nfunction draw() {\n  background(255, 192, 203); //Redraw background to clear old frames\n  image(img, 30, -720, width * 1.5, height * 4);\n  image(img1, -410, -570, width * 1.5, height * 4);\n  drawHearts();\n  moveHearts();\n  drawTitle(); \n  drawBorder(); \n}\n\nfunction startGame() {\n  window.location.href = 'game.html'; // Redirects to the game page\n}\n\nfunction drawHearts() {\n  for (let heart of hearts) {\n    drawHeart(heart.x, heart.y, heart.size);\n  }\n}\n\nfunction drawHeart(x, y, size) {\n  fill(255, 105, 180);\n  noStroke();\n  beginShape();\n  vertex(x, y);\n  bezierVertex(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);\n  bezierVertex(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);\n  endShape(CLOSE);\n}\n\nfunction moveHearts() {\n  for (let heart of hearts) {\n    heart.y -= heart.speed;\n    if (heart.y < -50) {\n      heart.y = height + 50;\n      heart.x = random(width);\n    }\n  }\n}\n\nfunction drawBorder() {\n  stroke(180, 15, 139); \n  strokeWeight(18); // Set the thickness of the border\n  noFill();\n  rect(0, 0, width, height);\n}\n\nfunction drawTitle() {\n  // Title\n  textSize(75);\n  fill(365, 95, 140);\n  textAlign(CENTER, CENTER);\n  textFont(customFont);\n  text(\"Love Quest\", width / 2, height / 3);\n}\n\nfunction showInstructions() {\n  document.getElementById('instructionsModal').style.display = 'block';\n}\n\nfunction closeInstructions() {\n  document.getElementById('instructionsModal').style.display = 'none';\n}\n\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21496780c32e62042e1d",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-29T04:27:10.077Z",
+        "updatedAt": "2024-04-29T04:27:10.077Z",
+        "id": "662f21496780c32e62042e1d"
+      },
+      {
+        "name": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n    <meta charset=\"utf-8\" />\n\n  </head>\n  <body>\n    <div id=\"instructionsModal\" style=\"display: none; position: fixed; left: 32%; top: 50%; transform: translate(-50%, -50%); background-color: white; border: 8px solid #FCA6B3; padding: 20px; z-index: 1000; width: 300px; border-radius: 40px;\">\n  <h2>Instructions</h2>\n  <p>Your goal for the game is to help the character learn about love and find his love by passing levels and answering questions.</p>\n  <button onclick=\"closeInstructions()\">Close</button>\n</div>\n    <script src=\"sketch.js\"></script>\n  </body>\n</html>\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21496780c32e62042e19",
+        "createdAt": "2024-04-29T04:27:10.077Z",
+        "updatedAt": "2024-04-29T04:27:10.077Z",
+        "isSelectedFile": false,
+        "id": "662f21496780c32e62042e19"
+      },
+      {
+        "name": "style.css",
+        "content": "@import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');\nhtml, body {\n  margin: 0;\n  padding: 0;\n}\ncanvas {\n  display: block;\n}\n\n#instructionsModal h2 {\n  font-family: 'Jersey 15'; /* Specific font for the title */\n}\n\n#instructionsModal p {\n  font-family: 'Jersey 15';\n}",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21496780c32e62042e1e",
+        "createdAt": "2024-04-29T04:27:10.077Z",
+        "updatedAt": "2024-04-29T04:27:10.077Z",
+        "isSelectedFile": false,
+        "id": "662f21496780c32e62042e1e"
+      },
+      {
+        "name": "Jersey15.ttf",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21496780c32e62042e16",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/421c3ba9-d935-477c-a31c-94bd83ed8af6.ttf",
+        "updatedAt": "2024-04-29T04:27:10.077Z",
+        "createdAt": "2024-04-29T04:27:10.077Z",
+        "isSelectedFile": false,
+        "id": "662f21496780c32e62042e16"
+      },
+      {
+        "name": "shinchan.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21496780c32e62042e1c",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/c8af8471-7801-4482-970c-b24b1debe054.png",
+        "updatedAt": "2024-04-29T04:27:10.077Z",
+        "createdAt": "2024-04-29T04:27:10.077Z",
+        "isSelectedFile": false,
+        "id": "662f21496780c32e62042e1c"
+      },
+      {
+        "name": "playground.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21496780c32e62042e1a",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/9ed9683f-607b-4d17-bb1f-e0a085da2272.png",
+        "updatedAt": "2024-04-29T04:27:10.077Z",
+        "createdAt": "2024-04-29T04:27:10.077Z",
+        "isSelectedFile": false,
+        "id": "662f21496780c32e62042e1a"
+      },
+      {
+        "name": "game.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Adventure Game</title>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n</head>\n<body>\n    <script src=\"game_sketch.js\"></script>\n</body>\n</html>\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21496780c32e62042e17",
+        "isSelectedFile": false,
+        "updatedAt": "2024-04-29T04:27:10.077Z",
+        "createdAt": "2024-04-29T04:27:10.077Z",
+        "id": "662f21496780c32e62042e17"
+      },
+      {
+        "name": "game_sketch.js",
+        "content": "let player;\nlet ground;\nlet gravity = 0.6;  // Slightly adjusted for better realism\nlet jump = -15;\nlet playerImg;\n\nfunction preload() {\n  playerImg = loadImage('shin.png');  // Adjust the path as necessary\n}\n\nfunction setup() {\n  createCanvas(800, 500);\n  player = new Player();\n  ground = height - 50;  // Make sure this is correctly positioning the ground\n}\n\nfunction draw() {\n  background(135, 206, 235);  // Clear background each frame\n  fill(0, 155, 0);  // Green ground\n  rect(0, ground, width, 50);  // Draw ground\n\n  player.update();\n  player.display();  // Make sure player is always drawn last to be on top\n}\n\nfunction keyPressed() {\n  if (keyCode === UP_ARROW) {\n    player.jump();\n  }\n}\n\nclass Player {\n  constructor() {\n    this.x = 50;\n    this.y = ground - 30;  // Make sure the player starts on the ground\n    this.vy = 0;  // Initial vertical velocity\n    this.gravity = 0.6;\n    this.img = playerImg;  // Assign the loaded image to a property of the player\n    this.width = this.img.width / 2;  // Scale the image size if needed\n    this.height = this.img.height / 2;\n  }\n\n  update() {\n    this.vy += this.gravity;\n    this.y += this.vy;\n    this.y = constrain(this.y, 0, ground - this.height);  // Ensure the player doesn't go below the ground\n  }\n\n  display() {\n    image(this.img, this.x - this.width / 2, this.y - this.height, this.width, this.height);  // Draw the image centered at (this.x, this.y)\n  }\n\n  jump() {\n    if (this.y >= ground - this.height) {  // Check if the player is on the ground\n      this.vy = -15;  // Jump force\n    }\n  }\n}\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21496780c32e62042e18",
+        "isSelectedFile": true,
+        "updatedAt": "2024-04-29T04:27:10.077Z",
+        "createdAt": "2024-04-29T04:27:10.077Z",
+        "id": "662f21496780c32e62042e18"
+      },
+      {
+        "name": "shin.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21496780c32e62042e1b",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/9dd1ceca-558e-41c0-9046-53c2d401f0ae.png",
+        "updatedAt": "2024-04-29T04:27:10.077Z",
+        "createdAt": "2024-04-29T04:27:10.077Z",
+        "isSelectedFile": false,
+        "id": "662f21496780c32e62042e1b"
+      }
+    ],
+    "createdAt": "2024-04-29T04:25:46.790Z",
+    "updatedAt": "2024-04-29T04:27:10.077Z",
+    "id": "-HDsCS35f"
+  },
+  {
+    "name": "Love Actually copy",
+    "_id": "2HyxKnebd",
+    "files": [
+      {
+        "name": "root",
+        "content": "",
+        "children": [
+          "662f21165d13875ec63b881b",
+          "662f21165d13875ec63b881c",
+          "662f21165d13875ec63b881d",
+          "662f21165d13875ec63b881e",
+          "662f21165d13875ec63b881f",
+          "662f21165d13875ec63b8820",
+          "662f21165d13875ec63b8821",
+          "662f21165d13875ec63b8822",
+          "662f21165d13875ec63b8823"
+        ],
+        "fileType": "folder",
+        "_id": "662f21165d13875ec63b881a",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "isSelectedFile": false,
+        "id": "662f21165d13875ec63b881a"
+      },
+      {
+        "name": "sketch.js",
+        "content": "let startButton;\nlet instructionsButton;\nlet customFont;\nlet hearts = [];\nconst heartSpeed = 1;\nlet img;\nlet img1;\n\nfunction preload() {\n  customFont = loadFont('Jersey15.ttf');\n  img = loadImage('shinchan.png');\n  img1 = loadImage('playground.png')\n}\n\nfunction setup() {\n    createCanvas(800, 500);\n    background(255, 192, 203);\n\n    // Generate hearts\n    for (let i = 0; i < 20; i++) {\n        hearts.push({\n            x: random(width),\n            y: random(height),\n            size: random(10, 40),\n            speed: heartSpeed\n        });\n    }\n      setupButtons();\n}\n\nfunction setupButtons() {\n    startButton = createButton('Start Game');\n    startButton.position(width / 2 - 50, height / 2);\n    startButton.mousePressed(startGame);\n    startButton.style('background-color', '#F83B9A');\n    startButton.style('color', 'white');\n    startButton.style('padding', '10px 20px');\n    startButton.style('border', 'none');\n    startButton.style('border-radius', '10px');\n    \n    instructionsButton = createButton('Instructions');\n    instructionsButton.position(width / 2 - 50, height / 2 + 50);\n    instructionsButton.mousePressed(showInstructions);\n    instructionsButton.style('background-color', '#FFB6C1');\n    instructionsButton.style('color', 'white');\n    instructionsButton.style('padding', '10px 20px');\n    instructionsButton.style('border', 'none');\n    instructionsButton.style('border-radius', '10px');\n}\n\n\nfunction draw() {\n  background(255, 192, 203); //Redraw background to clear old frames\n  image(img, 30, -720, width * 1.5, height * 4);\n  image(img1, -410, -570, width * 1.5, height * 4);\n  drawHearts();\n  moveHearts();\n  drawTitle(); \n  drawBorder(); \n}\n\nfunction startGame() {\n  window.location.href = 'game.html'; // Redirects to the game page\n}\n\nfunction drawHearts() {\n  for (let heart of hearts) {\n    drawHeart(heart.x, heart.y, heart.size);\n  }\n}\n\nfunction drawHeart(x, y, size) {\n  fill(255, 105, 180);\n  noStroke();\n  beginShape();\n  vertex(x, y);\n  bezierVertex(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);\n  bezierVertex(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);\n  endShape(CLOSE);\n}\n\nfunction moveHearts() {\n  for (let heart of hearts) {\n    heart.y -= heart.speed;\n    if (heart.y < -50) {\n      heart.y = height + 50;\n      heart.x = random(width);\n    }\n  }\n}\n\nfunction drawBorder() {\n  stroke(180, 15, 139); \n  strokeWeight(18); // Set the thickness of the border\n  noFill();\n  rect(0, 0, width, height);\n}\n\nfunction drawTitle() {\n  // Title\n  textSize(75);\n  fill(365, 95, 140);\n  textAlign(CENTER, CENTER);\n  textFont(customFont);\n  text(\"Love Quest\", width / 2, height / 3);\n}\n\nfunction showInstructions() {\n  document.getElementById('instructionsModal').style.display = 'block';\n}\n\nfunction closeInstructions() {\n  document.getElementById('instructionsModal').style.display = 'none';\n}\n\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21165d13875ec63b8822",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "id": "662f21165d13875ec63b8822"
+      },
+      {
+        "name": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n    <meta charset=\"utf-8\" />\n\n  </head>\n  <body>\n    <div id=\"instructionsModal\" style=\"display: none; position: fixed; left: 32%; top: 50%; transform: translate(-50%, -50%); background-color: white; border: 8px solid #FCA6B3; padding: 20px; z-index: 1000; width: 300px; border-radius: 40px;\">\n  <h2>Instructions</h2>\n  <p>Your goal for the game is to help the character learn about love and find his love by passing levels and answering questions.</p>\n  <button onclick=\"closeInstructions()\">Close</button>\n</div>\n    <script src=\"sketch.js\"></script>\n  </body>\n</html>\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21165d13875ec63b881e",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "isSelectedFile": false,
+        "id": "662f21165d13875ec63b881e"
+      },
+      {
+        "name": "style.css",
+        "content": "@import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');\nhtml, body {\n  margin: 0;\n  padding: 0;\n}\ncanvas {\n  display: block;\n}\n\n#instructionsModal h2 {\n  font-family: 'Jersey 15'; /* Specific font for the title */\n}\n\n#instructionsModal p {\n  font-family: 'Jersey 15';\n}",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21165d13875ec63b8823",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "isSelectedFile": false,
+        "id": "662f21165d13875ec63b8823"
+      },
+      {
+        "name": "Jersey15.ttf",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21165d13875ec63b881b",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/876519f1-88c4-4a91-aff0-2cb8269e214a.ttf",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "isSelectedFile": false,
+        "id": "662f21165d13875ec63b881b"
+      },
+      {
+        "name": "shinchan.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21165d13875ec63b8821",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/29e3c5aa-ff5f-4ab9-8d61-417865b3236e.png",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "isSelectedFile": true,
+        "id": "662f21165d13875ec63b8821"
+      },
+      {
+        "name": "playground.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21165d13875ec63b881f",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/8741df1a-e516-43f1-a7d4-e2bc8d473f06.png",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "isSelectedFile": false,
+        "id": "662f21165d13875ec63b881f"
+      },
+      {
+        "name": "game.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Adventure Game</title>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n</head>\n<body>\n    <script src=\"game_sketch.js\"></script>\n</body>\n</html>\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21165d13875ec63b881c",
+        "isSelectedFile": false,
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "id": "662f21165d13875ec63b881c"
+      },
+      {
+        "name": "game_sketch.js",
+        "content": "function setup() {\n  createCanvas(800, 500);\n}\n\nfunction draw() {\n  background(255, 0, 0); // Should show a solid red background\n  console.log(\"If this shows in the console, JS is loading correctly.\");\n}\n\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21165d13875ec63b881d",
+        "isSelectedFile": false,
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "id": "662f21165d13875ec63b881d"
+      },
+      {
+        "name": "shin.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21165d13875ec63b8820",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/ccb605ce-e020-45ab-bfc5-e9f566740973.png",
+        "updatedAt": "2024-04-29T04:20:42.273Z",
+        "createdAt": "2024-04-29T04:20:42.273Z",
+        "isSelectedFile": false,
+        "id": "662f21165d13875ec63b8820"
+      }
+    ],
+    "createdAt": "2024-04-29T04:24:55.272Z",
+    "updatedAt": "2024-04-29T04:24:55.272Z",
+    "id": "2HyxKnebd"
+  },
+  {
+    "name": "Love Actually copy copy copy",
+    "_id": "SmCruYZS3",
+    "files": [
+      {
+        "name": "root",
+        "content": "",
+        "children": [
+          "662f2287b8483ef3b90989d7",
+          "662f2287b8483ef3b90989d8",
+          "662f2287b8483ef3b90989d9",
+          "662f2287b8483ef3b90989da",
+          "662f2287b8483ef3b90989db",
+          "662f2287b8483ef3b90989dc",
+          "662f2287b8483ef3b90989dd",
+          "662f2287b8483ef3b90989de",
+          "662f2287b8483ef3b90989df"
+        ],
+        "fileType": "folder",
+        "_id": "662f2287b8483ef3b90989d6",
+        "createdAt": "2024-04-29T04:30:52.645Z",
+        "updatedAt": "2024-04-29T04:30:52.645Z",
+        "isSelectedFile": false,
+        "id": "662f2287b8483ef3b90989d6"
+      },
+      {
+        "name": "sketch.js",
+        "content": "let startButton;\nlet instructionsButton;\nlet customFont;\nlet hearts = [];\nconst heartSpeed = 1;\nlet img;\nlet img1;\n\nfunction preload() {\n  customFont = loadFont('Jersey15.ttf');\n  img = loadImage('shinchan.png');\n  img1 = loadImage('playground.png')\n}\n\nfunction setup() {\n    createCanvas(800, 500);\n    background(255, 192, 203);\n\n    // Generate hearts\n    for (let i = 0; i < 20; i++) {\n        hearts.push({\n            x: random(width),\n            y: random(height),\n            size: random(10, 40),\n            speed: heartSpeed\n        });\n    }\n      setupButtons();\n}\n\nfunction setupButtons() {\n    startButton = createButton('Start Game');\n    startButton.position(width / 2 - 50, height / 2);\n    startButton.mousePressed(startGame);\n    startButton.style('background-color', '#F83B9A');\n    startButton.style('color', 'white');\n    startButton.style('padding', '10px 20px');\n    startButton.style('border', 'none');\n    startButton.style('border-radius', '10px');\n    \n    instructionsButton = createButton('Instructions');\n    instructionsButton.position(width / 2 - 50, height / 2 + 50);\n    instructionsButton.mousePressed(showInstructions);\n    instructionsButton.style('background-color', '#FFB6C1');\n    instructionsButton.style('color', 'white');\n    instructionsButton.style('padding', '10px 20px');\n    instructionsButton.style('border', 'none');\n    instructionsButton.style('border-radius', '10px');\n}\n\n\nfunction draw() {\n  background(255, 192, 203); //Redraw background to clear old frames\n  image(img, 30, -720, width * 1.5, height * 4);\n  image(img1, -410, -570, width * 1.5, height * 4);\n  drawHearts();\n  moveHearts();\n  drawTitle(); \n  drawBorder(); \n}\n\nfunction startGame() {\n  window.location.href = 'game.html'; // Redirects to the game page\n}\n\nfunction drawHearts() {\n  for (let heart of hearts) {\n    drawHeart(heart.x, heart.y, heart.size);\n  }\n}\n\nfunction drawHeart(x, y, size) {\n  fill(255, 105, 180);\n  noStroke();\n  beginShape();\n  vertex(x, y);\n  bezierVertex(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);\n  bezierVertex(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);\n  endShape(CLOSE);\n}\n\nfunction moveHearts() {\n  for (let heart of hearts) {\n    heart.y -= heart.speed;\n    if (heart.y < -50) {\n      heart.y = height + 50;\n      heart.x = random(width);\n    }\n  }\n}\n\nfunction drawBorder() {\n  stroke(180, 15, 139); \n  strokeWeight(18); // Set the thickness of the border\n  noFill();\n  rect(0, 0, width, height);\n}\n\nfunction drawTitle() {\n  // Title\n  textSize(75);\n  fill(365, 95, 140);\n  textAlign(CENTER, CENTER);\n  textFont(customFont);\n  text(\"Love Quest\", width / 2, height / 3);\n}\n\nfunction showInstructions() {\n  document.getElementById('instructionsModal').style.display = 'block';\n}\n\nfunction closeInstructions() {\n  document.getElementById('instructionsModal').style.display = 'none';\n}\n\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f2287b8483ef3b90989de",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-29T04:30:52.645Z",
+        "updatedAt": "2024-04-29T04:30:52.645Z",
+        "id": "662f2287b8483ef3b90989de"
+      },
+      {
+        "name": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n    <meta charset=\"utf-8\" />\n\n  </head>\n  <body>\n    <div id=\"instructionsModal\" style=\"display: none; position: fixed; left: 32%; top: 50%; transform: translate(-50%, -50%); background-color: white; border: 8px solid #FCA6B3; padding: 20px; z-index: 1000; width: 300px; border-radius: 40px;\">\n  <h2>Instructions</h2>\n  <p>Your goal for the game is to help the character learn about love and find his love by passing levels and answering questions.</p>\n  <button onclick=\"closeInstructions()\">Close</button>\n</div>\n    <script src=\"sketch.js\"></script>\n  </body>\n</html>\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f2287b8483ef3b90989da",
+        "createdAt": "2024-04-29T04:30:52.645Z",
+        "updatedAt": "2024-04-29T04:30:52.645Z",
+        "isSelectedFile": false,
+        "id": "662f2287b8483ef3b90989da"
+      },
+      {
+        "name": "style.css",
+        "content": "@import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');\nhtml, body {\n  margin: 0;\n  padding: 0;\n}\ncanvas {\n  display: block;\n}\n\n#instructionsModal h2 {\n  font-family: 'Jersey 15'; /* Specific font for the title */\n}\n\n#instructionsModal p {\n  font-family: 'Jersey 15';\n}",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f2287b8483ef3b90989df",
+        "createdAt": "2024-04-29T04:30:52.645Z",
+        "updatedAt": "2024-04-29T04:30:52.645Z",
+        "isSelectedFile": false,
+        "id": "662f2287b8483ef3b90989df"
+      },
+      {
+        "name": "Jersey15.ttf",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f2287b8483ef3b90989d7",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/d66ac37f-9e7c-471e-ae83-db32fbf56bc8.ttf",
+        "updatedAt": "2024-04-29T04:30:52.645Z",
+        "createdAt": "2024-04-29T04:30:52.645Z",
+        "isSelectedFile": false,
+        "id": "662f2287b8483ef3b90989d7"
+      },
+      {
+        "name": "shinchan.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f2287b8483ef3b90989dd",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/e004eca4-8a67-40a3-bfe4-02d85900862b.png",
+        "updatedAt": "2024-04-29T04:30:52.645Z",
+        "createdAt": "2024-04-29T04:30:52.645Z",
+        "isSelectedFile": false,
+        "id": "662f2287b8483ef3b90989dd"
+      },
+      {
+        "name": "playground.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f2287b8483ef3b90989db",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/69d602bd-3925-424b-85b5-8f8551bd87e8.png",
+        "updatedAt": "2024-04-29T04:30:52.645Z",
+        "createdAt": "2024-04-29T04:30:52.645Z",
+        "isSelectedFile": false,
+        "id": "662f2287b8483ef3b90989db"
+      },
+      {
+        "name": "game.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Adventure Game</title>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n</head>\n<body>\n    <script src=\"game_sketch.js\"></script>\n</body>\n</html>\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f2287b8483ef3b90989d8",
+        "isSelectedFile": false,
+        "updatedAt": "2024-04-29T04:30:52.645Z",
+        "createdAt": "2024-04-29T04:30:52.645Z",
+        "id": "662f2287b8483ef3b90989d8"
+      },
+      {
+        "name": "game_sketch.js",
+        "content": "let player;\nlet ground;\nlet gravity = 0.6;  // Slightly adjusted for better realism\nlet jump = -15;\nlet playerImg;\n\nfunction preload() {\n  playerImg = loadImage('shin.png');  // Adjust the path as necessary\n}\n\nfunction setup() {\n  createCanvas(800, 500);\n  player = new Player();\n  ground = height - 50;  // Make sure this is correctly positioning the ground\n}\n\nfunction draw() {\n  background(135, 206, 235);  // Clear background each frame\n  fill(0, 155, 0);  // Green ground\n  rect(0, ground, width, 50);  // Draw ground\n\n  player.update();\n  player.display();  // Make sure player is always drawn last to be on top\n}\n\nfunction keyPressed() {\n  if (keyCode === UP_ARROW) {\n    player.jump();\n  }\n}\n\nclass Player {\n    constructor() {\n        this.x = 50;\n        this.y = ground - 30;\n        this.vy = 0;\n        this.gravity = 0.6;\n        this.img = playerImg;\n        this.width = this.img.width / 2;\n        this.height = this.img.height / 2;\n\n        // Log initial properties\n        console.log(\"Player created with x:\", this.x, \"y:\", this.y, \"width:\", this.width, \"height:\", this.height);\n    }\n\n  update() {\n    this.vy += this.gravity;\n    this.y += this.vy;\n    this.y = constrain(this.y, 0, ground - this.height);  // Ensure the player doesn't go below the ground\n  }\n\n  display() {\n    image(this.img, this.x - this.width / 2, this.y - this.height, this.width, this.height);  // Draw the image centered at (this.x, this.y)\n  }\n\n  jump() {\n    if (this.y >= ground - this.height) {  // Check if the player is on the ground\n      this.vy = -15;  // Jump force\n    }\n  }\n}\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f2287b8483ef3b90989d9",
+        "isSelectedFile": true,
+        "updatedAt": "2024-04-29T04:30:52.645Z",
+        "createdAt": "2024-04-29T04:30:52.645Z",
+        "id": "662f2287b8483ef3b90989d9"
+      },
+      {
+        "name": "shin.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f2287b8483ef3b90989dc",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/9a4dfca0-e298-4ef9-a634-564036ce08b1.png",
+        "updatedAt": "2024-04-29T04:30:52.645Z",
+        "createdAt": "2024-04-29T04:30:52.645Z",
+        "isSelectedFile": false,
+        "id": "662f2287b8483ef3b90989dc"
+      }
+    ],
+    "createdAt": "2024-04-29T04:31:04.636Z",
+    "updatedAt": "2024-04-29T04:31:04.636Z",
+    "id": "SmCruYZS3"
+  },
+  {
+    "name": "Love Actually Final UI",
+    "_id": "RVruVKpZZ",
+    "files": [
+      {
+        "name": "root",
+        "content": "",
+        "children": [
+          "662f21ad6780c32e62042e2a",
+          "662f21ad6780c32e62042e2d",
+          "662f21ad6780c32e62042e2e",
+          "662f21ad6780c32e62042e2f",
+          "662f21ad6780c32e62042e30",
+          "662f21ad6780c32e62042e31",
+          "662f21ad6780c32e62042e32"
+        ],
+        "fileType": "folder",
+        "_id": "662f21ad6780c32e62042e29",
+        "createdAt": "2024-04-29T10:50:02.122Z",
+        "updatedAt": "2024-04-29T10:50:02.122Z",
+        "isSelectedFile": false,
+        "id": "662f21ad6780c32e62042e29"
+      },
+      {
+        "name": "sketch.js",
+        "content": "let startButton;\nlet instructionsButton;\nlet customFont;\nlet hearts = [];\nconst heartSpeed = 1;\nlet img;\nlet img1;\n\nfunction preload() {\n  customFont = loadFont('Jersey15.ttf');\n  img = loadImage('shinchan.png');\n  img1 = loadImage('playground.png')\n}\n\nfunction setup() {\n    createCanvas(800, 500);\n    background(255, 192, 203);\n\n    // Generate hearts\n    for (let i = 0; i < 20; i++) {\n        hearts.push({\n            x: random(width),\n            y: random(height),\n            size: random(10, 40),\n            speed: heartSpeed\n        });\n    }\n      setupButtons();\n}\n\nfunction setupButtons() {\n    startButton = createButton('Start Game');\n    startButton.position(width / 2 - 50, height / 2);\n    startButton.mousePressed(startGame);\n    startButton.style('background-color', '#F83B9A');\n    startButton.style('color', 'white');\n    startButton.style('padding', '10px 20px');\n    startButton.style('border', 'none');\n    startButton.style('border-radius', '10px');\n    \n    instructionsButton = createButton('Instructions');\n    instructionsButton.position(width / 2 - 50, height / 2 + 50);\n    instructionsButton.mousePressed(showInstructions);\n    instructionsButton.style('background-color', '#FFB6C1');\n    instructionsButton.style('color', 'white');\n    instructionsButton.style('padding', '10px 20px');\n    instructionsButton.style('border', 'none');\n    instructionsButton.style('border-radius', '10px');\n}\n\n\nfunction draw() {\n  background(255, 192, 203); //Redraw background to clear old frames\n  image(img, 30, -720, width * 1.5, height * 4);\n  image(img1, -410, -570, width * 1.5, height * 4);\n  drawHearts();\n  moveHearts();\n  drawTitle(); \n  drawBorder(); \n}\n\nfunction startGame() {\n//\n}\n\nfunction drawHearts() {\n  for (let heart of hearts) {\n    drawHeart(heart.x, heart.y, heart.size);\n  }\n}\n\nfunction drawHeart(x, y, size) {\n  fill(255, 105, 180);\n  noStroke();\n  beginShape();\n  vertex(x, y);\n  bezierVertex(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);\n  bezierVertex(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);\n  endShape(CLOSE);\n}\n\nfunction moveHearts() {\n  for (let heart of hearts) {\n    heart.y -= heart.speed;\n    if (heart.y < -50) {\n      heart.y = height + 50;\n      heart.x = random(width);\n    }\n  }\n}\n\nfunction drawBorder() {\n  stroke(180, 15, 139); \n  strokeWeight(18); // Set the thickness of the border\n  noFill();\n  rect(0, 0, width, height);\n}\n\nfunction drawTitle() {\n  // Title\n  textSize(75);\n  fill(365, 95, 140);\n  textAlign(CENTER, CENTER);\n  textFont(customFont);\n  text(\"Love Quest\", width / 2, height / 3);\n}\n\nfunction showInstructions() {\n  document.getElementById('instructionsModal').style.display = 'block';\n}\n\nfunction closeInstructions() {\n  document.getElementById('instructionsModal').style.display = 'none';\n}\n\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21ad6780c32e62042e31",
+        "isSelectedFile": true,
+        "createdAt": "2024-04-29T10:50:02.122Z",
+        "updatedAt": "2024-04-29T10:50:02.122Z",
+        "id": "662f21ad6780c32e62042e31"
+      },
+      {
+        "name": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n    <meta charset=\"utf-8\" />\n\n  </head>\n  <body>\n    <div id=\"instructionsModal\" style=\"display: none; position: fixed; left: 32%; top: 50%; transform: translate(-50%, -50%); background-color: white; border: 8px solid #FCA6B3; padding: 20px; z-index: 1000; width: 300px; border-radius: 40px;\">\n  <h2>Instructions</h2>\n  <p>Your goal for the game is to help the character learn about love and find his love by passing levels and answering questions.</p>\n  <button onclick=\"closeInstructions()\">Close</button>\n</div>\n    <script src=\"sketch.js\"></script>\n  </body>\n</html>\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21ad6780c32e62042e2d",
+        "createdAt": "2024-04-29T10:50:02.122Z",
+        "updatedAt": "2024-04-29T10:50:02.122Z",
+        "isSelectedFile": false,
+        "id": "662f21ad6780c32e62042e2d"
+      },
+      {
+        "name": "style.css",
+        "content": "@import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');\nhtml, body {\n  margin: 0;\n  padding: 0;\n}\ncanvas {\n  display: block;\n}\n\n#instructionsModal h2 {\n  font-family: 'Jersey 15'; /* Specific font for the title */\n}\n\n#instructionsModal p {\n  font-family: 'Jersey 15';\n}",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21ad6780c32e62042e32",
+        "createdAt": "2024-04-29T10:50:02.122Z",
+        "updatedAt": "2024-04-29T10:50:02.122Z",
+        "isSelectedFile": false,
+        "id": "662f21ad6780c32e62042e32"
+      },
+      {
+        "name": "Jersey15.ttf",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21ad6780c32e62042e2a",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/6204259b-5568-46cf-94d1-054f916299e2.ttf",
+        "updatedAt": "2024-04-29T10:50:02.122Z",
+        "createdAt": "2024-04-29T10:50:02.122Z",
+        "isSelectedFile": false,
+        "id": "662f21ad6780c32e62042e2a"
+      },
+      {
+        "name": "shinchan.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21ad6780c32e62042e30",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/f701e8f3-6fda-432a-89c0-3ba98aca2a44.png",
+        "updatedAt": "2024-04-29T10:50:02.122Z",
+        "createdAt": "2024-04-29T10:50:02.122Z",
+        "isSelectedFile": false,
+        "id": "662f21ad6780c32e62042e30"
+      },
+      {
+        "name": "playground.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21ad6780c32e62042e2e",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/fbc41282-f067-4f13-bba5-6f0c6d574b66.png",
+        "updatedAt": "2024-04-29T10:50:02.122Z",
+        "createdAt": "2024-04-29T10:50:02.122Z",
+        "isSelectedFile": false,
+        "id": "662f21ad6780c32e62042e2e"
+      },
+      {
+        "name": "shin.png",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f21ad6780c32e62042e2f",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/acb98613-eb2a-4d64-aba9-a9920e9d8940.png",
+        "updatedAt": "2024-04-29T10:50:02.122Z",
+        "createdAt": "2024-04-29T10:50:02.122Z",
+        "isSelectedFile": false,
+        "id": "662f21ad6780c32e62042e2f"
+      }
+    ],
+    "createdAt": "2024-04-29T04:27:26.284Z",
+    "updatedAt": "2024-04-29T10:50:02.122Z",
+    "id": "RVruVKpZZ"
+  },
+  {
+    "name": "Love Quest",
+    "_id": "C95Ii3IUO",
+    "updatedAt": "2024-04-29T04:24:51.961Z",
+    "files": [
+      {
+        "name": "root",
+        "content": "",
+        "children": [
+          "662f20dcb7723f83c69da580",
+          "662f20dcb7723f83c69da57f",
+          "662f20dcb7723f83c69da581"
+        ],
+        "fileType": "folder",
+        "_id": "662f20dcb7723f83c69da582",
+        "createdAt": "2024-04-29T04:24:51.961Z",
+        "updatedAt": "2024-04-29T04:24:51.961Z",
+        "isSelectedFile": false,
+        "id": "662f20dcb7723f83c69da582"
+      },
+      {
+        "name": "sketch.js",
+        "content": "let startButton;\nlet instructionsButton;\nlet customFont;\nlet hearts = [];\nconst heartSpeed = 1;\nlet img;\nlet img1;\n\nfunction preload() {\n  customFont = loadFont('Jersey15.ttf');\n  img = loadImage('shinchan.png');\n  img1 = loadImage('playground.png')\n}\n\nfunction setup() {\n    createCanvas(800, 500);\n    background(255, 192, 203);\n\n    // Generate hearts\n    for (let i = 0; i < 20; i++) {\n        hearts.push({\n            x: random(width),\n            y: random(height),\n            size: random(10, 40),\n            speed: heartSpeed\n        });\n    }\n      setupButtons();\n}\n\nfunction setupButtons() {\n    startButton = createButton('Start Game');\n    startButton.position(width / 2 - 50, height / 2);\n    startButton.mousePressed(startGame);\n    startButton.style('background-color', '#F83B9A');\n    startButton.style('color', 'white');\n    startButton.style('padding', '10px 20px');\n    startButton.style('border', 'none');\n    startButton.style('border-radius', '10px');\n    \n    instructionsButton = createButton('Instructions');\n    instructionsButton.position(width / 2 - 50, height / 2 + 50);\n    instructionsButton.mousePressed(showInstructions);\n    instructionsButton.style('background-color', '#FFB6C1');\n    instructionsButton.style('color', 'white');\n    instructionsButton.style('padding', '10px 20px');\n    instructionsButton.style('border', 'none');\n    instructionsButton.style('border-radius', '10px');\n}\n\n\nfunction draw() {\n  background(255, 192, 203); //Redraw background to clear old frames\n  image(img, 30, -720, width * 1.5, height * 4);\n  image(img1, -410, -570, width * 1.5, height * 4);\n  drawHearts();\n  moveHearts();\n  drawTitle(); \n  drawBorder(); \n}\n\nfunction startGame() {\n  window.location.href = 'game.html'; // Redirects to the game page\n}\n\nfunction drawHearts() {\n  for (let heart of hearts) {\n    drawHeart(heart.x, heart.y, heart.size);\n  }\n}\n\nfunction drawHeart(x, y, size) {\n  fill(255, 105, 180);\n  noStroke();\n  beginShape();\n  vertex(x, y);\n  bezierVertex(x - size / 2, y - size / 2, x - size, y + size / 3, x, y + size);\n  bezierVertex(x + size, y + size / 3, x + size / 2, y - size / 2, x, y);\n  endShape(CLOSE);\n}\n\nfunction moveHearts() {\n  for (let heart of hearts) {\n    heart.y -= heart.speed;\n    if (heart.y < -50) {\n      heart.y = height + 50;\n      heart.x = random(width);\n    }\n  }\n}\n\nfunction drawBorder() {\n  stroke(180, 15, 139); \n  strokeWeight(18); // Set the thickness of the border\n  noFill();\n  rect(0, 0, width, height);\n}\n\nfunction drawTitle() {\n  // Title\n  textSize(75);\n  fill(365, 95, 140);\n  textAlign(CENTER, CENTER);\n  textFont(customFont);\n  text(\"Love Quest\", width / 2, height / 3);\n}\n\nfunction showInstructions() {\n  document.getElementById('instructionsModal').style.display = 'block';\n}\n\nfunction closeInstructions() {\n  document.getElementById('instructionsModal').style.display = 'none';\n}\n\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f20dcb7723f83c69da57f",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-29T04:24:51.961Z",
+        "updatedAt": "2024-04-29T04:24:51.961Z",
+        "id": "662f20dcb7723f83c69da57f"
+      },
+      {
+        "name": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n    <meta charset=\"utf-8\" />\n\n  </head>\n  <body>\n    <div id=\"instructionsModal\" style=\"display: none; position: fixed; left: 32%; top: 50%; transform: translate(-50%, -50%); background-color: white; border: 8px solid #FCA6B3; padding: 20px; z-index: 1000; width: 300px; border-radius: 40px;\">\n  <h2>Instructions</h2>\n  <p>Your goal for the game is to help the character learn about love and find his love by passing levels and answering questions.</p>\n  <button onclick=\"closeInstructions()\">Close</button>\n</div>\n    <script src=\"sketch.js\"></script>\n  </body>\n</html>\n\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f20dcb7723f83c69da580",
+        "createdAt": "2024-04-29T04:24:51.961Z",
+        "updatedAt": "2024-04-29T04:24:51.961Z",
+        "isSelectedFile": false,
+        "id": "662f20dcb7723f83c69da580"
+      },
+      {
+        "name": "style.css",
+        "content": "@import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');\nhtml, body {\n  margin: 0;\n  padding: 0;\n}\ncanvas {\n  display: block;\n}\n\n#instructionsModal h2 {\n  font-family: 'Jersey 15'; /* Specific font for the title */\n}\n\n#instructionsModal p {\n  font-family: 'Jersey 15';\n}\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "662f20dcb7723f83c69da581",
+        "createdAt": "2024-04-29T04:24:51.961Z",
+        "updatedAt": "2024-04-29T04:24:51.961Z",
+        "isSelectedFile": true,
+        "id": "662f20dcb7723f83c69da581"
+      }
+    ],
+    "createdAt": "2024-04-29T04:24:12.979Z",
+    "id": "C95Ii3IUO"
+  },
+  {
     "name": "Phase flea",
     "_id": "ITnDZZxcV",
     "updatedAt": "2022-10-17T19:25:03.439Z",
@@ -1067,6 +2366,115 @@
     ],
     "createdAt": "2022-10-17T19:25:03.439Z",
     "id": "ITnDZZxcV"
+  },
+  {
+    "name": "PhotoBooth - IMS",
+    "_id": "7bTAzOws8",
+    "files": [
+      {
+        "name": "root",
+        "content": "",
+        "children": [
+          "6630b83b0242b5623436e6c5",
+          "6630b83b0242b5623436e6c6",
+          "6630b83b0242b5623436e6c7",
+          "6630b83b0242b5623436e6c8",
+          "6630b83b0242b5623436e6c9",
+          "6630b83b0242b5623436e6ca",
+          "6630b83b0242b5623436e6cb"
+        ],
+        "fileType": "folder",
+        "_id": "6630b83b0242b5623436e6c4",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-30T10:37:22.055Z",
+        "updatedAt": "2024-04-30T10:37:22.055Z",
+        "id": "6630b83b0242b5623436e6c4"
+      },
+      {
+        "name": "sketch.js",
+        "content": "//https://editor.p5js.org/kg3171/sketches/7bTAzOws8\n//PhotoBooth - IMS\n\nlet capture;\nlet button;\nlet camerasound;\nlet timeSelect; // Variable for the dropdown menu\nlet filterSelect; // Variable for the filter selection dropdown\nlet interval = 3000; // Default time interval\nlet mode = \"start\";\nlet selectedFilter = \"none\"; // Default filter\nlet backgroundMusic;\nlet frameColor = '#7fff00';\nlet colorSelect;\nlet userInput;\nlet startOverButton;\nlet butt1; // Define butt1 variable\n\nlet emojis = ['🌷', '🌿', '🩰', '🍼', '🍡', '👻', '💖', '🌟', '🫧', '🌸', '🎏','⛄️','🫐','🍓','🧾','🃏','🧊','🍰','🦢','🌊','🎈', '🧸','🛒','🎀','🎁','🔫','💕','🖍','🎧','🧃','🎂','🍅','🥑','🍊',''];\n\n\nfunction preload() {\n  camerasound = loadSound('cam.mp3');\n  backgroundMusic = loadSound('background.mp3');\n  font = loadFont('font.otf');\n}\n\nfunction setup() {\n  createCanvas(320, 960);\n  capture = createCapture(VIDEO);\n  capture.size(320, 240);\n  capture.hide();\n  \n    colorSelect = createSelect();\n  colorSelect.position(400, 90);\n  colorSelect.option('Green', '#7fff00');\n  colorSelect.option('Black', '#000000');\n  colorSelect.option('Pink', '#FFC0CB');\n  colorSelect.option('Blue', '#1493ff');\n  colorSelect.option('Gray', '#dbe2e9');\n  colorSelect.option('Orange', '#ffa500');\n  colorSelect.option('DarkPink', '#ff69b4');\n  colorSelect.changed(() => frameColor = colorSelect.value());\n\n  // Time selection dropdown\n  timeSelect = createSelect();\n  timeSelect.position(400, 10);\n  timeSelect.option('3 seconds', 3000);\n  timeSelect.option('7 seconds', 7000);\n  timeSelect.option('10 seconds', 10000);\n  timeSelect.changed(() => interval = timeSelect.value());\n\n  // Filter selection dropdown\n  filterSelect = createSelect();\n  filterSelect.position(400, 50);\n  filterSelect.option('None', 'none');\n  filterSelect.option('Posterize', 'posterize');\n  filterSelect.option('Blur', 'blur');\n  filterSelect.option('Threshold', 'threshold');\n  filterSelect.option('Black&White', 'blackwhite');\n  filterSelect.changed(() => selectedFilter = filterSelect.value());\n\n  button = createButton('Press To Start');\n  button.position(405, 240);\n  button.mousePressed(getready);\n  \n  startOverButton = createButton(\"Start Over\");\n    startOverButton.position(405, 200);\n    startOverButton.mousePressed(startOver);\n  \n  if (!backgroundMusic.isPlaying()) {\n    backgroundMusic.loop();\n  }\n    \n    userInput = createInput('');\n  userInput.position(400, 130); // Adjust position as needed\n    userInput.attribute('placeholder', 'Type text here');\n}\n\nfunction draw() {\n  if (mode == 'start') {\n    translate(width, 0);\n    scale(-1, 1);\n    image(capture, 0, 0);\n}\n  else if (mode=='pic1'){\n    translate(width,0);\n  scale(-1, 1);\n  image(capture, 0, 0); \n    \n  }\n  else if (mode=='pic2'){\n    translate(width,0);\n  scale(-1, 1);\n  image(capture, 0, 0); \n  }\n  else if (mode=='done'){\n    translate(width,0);\n  scale(-1, 1);\n  image(capture, 0, 0); \n    \n    \n    drawOldFashionedFrame();\n    \n  }\n  \n        switch (selectedFilter) {\n    case 'posterize':\n      filter(POSTERIZE, 3);\n      break;\n    case 'blur':\n      filter(BLUR, 3);\n      break;\n    case 'threshold':\n      filter(THRESHOLD);\n      break;\n    case 'blackwhite':\n        filter(GRAY);\n        break;\n  }\n\n  }\n\nfunction getready() {\n  button.hide();\n  setTimeout(pic, interval); // Use the selected interval\n}\n\nfunction drawRandomEmoji() {\n    const numberOfEmojis = round(random(15, 30)); // Increased number of emojis for the whole strip\n    textSize(25); // Set the emoji size\n\n    for (let i = 0; i < numberOfEmojis; i++) {\n        let emoji = random(emojis); // Select a random emoji\n        let xPos = random(20, 300); // Randomize the x position between 20 and 300\n        let yPos = random(20, 940); // Randomize the y position across the whole canvas height\n        text(emoji, xPos, yPos); // Draw the emoji at the random position\n    }\n}\n\nfunction pic() {\n  image(capture, 0, 240);\n  mode = \"pic1\";\n  setTimeout(nextpic, interval);\n}\n\nfunction startOver() {\n    mode = \"start\"; // Reset the mode to the initial state\n    userInput.value(\"\"); // Clear the user input field\n    button.show(); // Show the start button again if it was hidden\n    butt1.hide(); // Ensure the save button is hidden\n\n    timeSelect.value(3000); \n    filterSelect.value('none'); \n    colorSelect.value('#7fff00'); \n    frameColor = '#7fff00'; \n\n    if (backgroundMusic.isPlaying()) {\n        backgroundMusic.stop();\n    }\n    backgroundMusic.loop();\n\n    // Clear the canvas and redraw background if necessary\n    clear();\n    background(255); // Set to default white background, or as needed\n\n    // Reset the capture device if necessary\n    capture.remove(); // Stop the existing capture\n    capture = createCapture(VIDEO); // Restart capture\n    capture.size(320, 240);\n    capture.hide();\n}\n\nfunction nextpic() {\n  if (mode == \"pic1\") {\n    mode = \"pic2\";\n    image(capture, 0, 480);\n    setTimeout(lastpic, interval);\n  }\n}\n\nfunction lastpic() {\n  if (mode == \"pic2\") {\n    mode = \"done\";\n    image(capture, 0, 720);\n    setTimeout(done, interval);\n  }\n}\n\nfunction done() {\n  if (mode == \"done\") {\n    mode = \"stop\";\n    image(capture, 0, 960); // Adjust if needed\n    translate(width, 0); // Move the origin to the canvas's right edge for mirroring\n    scale(-1, 1); // Apply horizontal flip to mirror everything\n    \n     drawRandomEmoji();\n\n    let userText = userInput.value(); // Get the text from the input\n    fill(0); // Text color\n    textSize(30); // Text size\n    textAlign(CENTER, BOTTOM);\n    textFont(font);\n     text(userInput.value(), width / 2, 950);\n\n    setTimeout(end, 500);\n  }\n}\n\nfunction end() {\n    camerasound.stop();\n    butt1 = createButton(\"Save\");\n    butt1.position(405, 240);\n    butt1.mousePressed(savepic);\n    backgroundMusic.stop();\n}\n\nfunction savepic(){\n  save('myCanvas.png');\n\n}\nfunction drawOldFashionedFrame() {\n  noFill();\n  stroke(frameColor);\n  strokeWeight(35);\n  rect(0, 0, 320, 960);\n}\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "6630b83b0242b5623436e6c9",
+        "isSelectedFile": true,
+        "createdAt": "2024-04-30T10:37:22.055Z",
+        "updatedAt": "2024-04-30T10:37:22.055Z",
+        "id": "6630b83b0242b5623436e6c9"
+      },
+      {
+        "name": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js\"></script>\n    <script src=\"https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js\"></script>\n    <link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\">\n    <meta charset=\"utf-8\" />\n\n  </head>\n  <body>\n    <main>\n    </main>\n    <script src=\"sketch.js\"></script>\n  </body>\n</html>\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "6630b83b0242b5623436e6c8",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-30T10:37:22.055Z",
+        "updatedAt": "2024-04-30T10:37:22.055Z",
+        "id": "6630b83b0242b5623436e6c8"
+      },
+      {
+        "name": "style.css",
+        "content": "html, body {\n  margin: 0;\n  padding: 0;\n}\ncanvas {\n  display: block;\n}\n",
+        "children": [],
+        "fileType": "file",
+        "_id": "6630b83b0242b5623436e6cb",
+        "isSelectedFile": false,
+        "createdAt": "2024-04-30T10:37:22.055Z",
+        "updatedAt": "2024-04-30T10:37:22.055Z",
+        "id": "6630b83b0242b5623436e6cb"
+      },
+      {
+        "name": "cam.mp3",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "6630b83b0242b5623436e6c6",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/9ce811b0-1e54-422c-91f8-ac3d19b3cac2.mp3",
+        "updatedAt": "2024-04-30T10:37:22.055Z",
+        "createdAt": "2024-04-30T10:37:22.055Z",
+        "isSelectedFile": false,
+        "id": "6630b83b0242b5623436e6c6"
+      },
+      {
+        "name": "background.mp3",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "6630b83b0242b5623436e6c5",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/649fd432-2208-4d10-be72-d96d8fd95196.mp3",
+        "updatedAt": "2024-04-30T10:37:22.055Z",
+        "createdAt": "2024-04-30T10:37:22.055Z",
+        "isSelectedFile": false,
+        "id": "6630b83b0242b5623436e6c5"
+      },
+      {
+        "name": "sticker1.jpeg",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "6630b83b0242b5623436e6ca",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/ca768d21-7dd2-4e87-bba2-49265dd046f9.jpeg",
+        "updatedAt": "2024-04-30T10:37:22.055Z",
+        "createdAt": "2024-04-30T10:37:22.055Z",
+        "isSelectedFile": false,
+        "id": "6630b83b0242b5623436e6ca"
+      },
+      {
+        "name": "font.otf",
+        "content": "",
+        "children": [],
+        "fileType": "file",
+        "_id": "6630b83b0242b5623436e6c7",
+        "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/a1d79e48-1997-42ed-b746-056bb12de6ef.otf",
+        "updatedAt": "2024-04-30T10:37:22.055Z",
+        "createdAt": "2024-04-30T10:37:22.055Z",
+        "isSelectedFile": false,
+        "id": "6630b83b0242b5623436e6c7"
+      }
+    ],
+    "createdAt": "2024-04-30T09:22:04.543Z",
+    "updatedAt": "2024-04-30T10:37:22.055Z",
+    "id": "7bTAzOws8"
   },
   {
     "name": "Slytherin Final Spell",
@@ -1601,19 +3009,19 @@
         "fileType": "folder",
         "_id": "660d8da06817d45d0877c01a",
         "isSelectedFile": false,
-        "createdAt": "2024-04-16T13:23:13.022Z",
-        "updatedAt": "2024-04-16T13:23:13.022Z",
+        "createdAt": "2024-04-30T09:22:02.085Z",
+        "updatedAt": "2024-04-30T09:22:02.085Z",
         "id": "660d8da06817d45d0877c01a"
       },
       {
         "name": "sketch.js",
-        "content": "//https://editor.p5js.org/kg3171/sketches/XqtIs0y7O\n//ims04-chlo.\n\nlet capture;\nlet button;\nlet camerasound;\nlet timeSelect; // Variable for the dropdown menu\nlet filterSelect; // Variable for the filter selection dropdown\nlet interval = 3000; // Default time interval\nlet mode = \"start\";\nlet selectedFilter = \"none\"; // Default filter\nlet backgroundMusic;\nlet frameColor = '#7fff00';\nlet colorSelect;\nlet userInput;\n\nlet nostalgicMessages = [\n    \"🥑🐢🍄🧃🔫\",\n    \"🌷🍰🍓🧷🎀\",\n    \"🫧🧋🦢🎧🕶️\",\n    \"🌸🍡🩰🎀🛍\",\n    \"🧾🥣🍼🧊🥚\",\n    \"🫐🎏⛄️🌊🦋\"\n];\n\nfunction preload() {\n  camerasound = loadSound('cam.mp3');\n  backgroundMusic = loadSound('background.mp3');\n  font = loadFont('font.otf');\n}\n\nfunction setup() {\n  createCanvas(320, 960);\n  capture = createCapture(VIDEO);\n  capture.size(320, 240);\n  capture.hide();\n  \n    colorSelect = createSelect();\n  colorSelect.position(400, 90);\n  colorSelect.option('Green', '#7fff00');\n  colorSelect.option('Black', '#000000');\n  colorSelect.option('Pink', '#FFC0CB');\n  colorSelect.option('Blue', '#1493ff');\n  colorSelect.option('Gray', '#dbe2e9');\n  colorSelect.option('Orange', '#ffa500');\n  colorSelect.option('DarkPink', '#ff69b4');\n  colorSelect.changed(() => frameColor = colorSelect.value());\n\n  // Time selection dropdown\n  timeSelect = createSelect();\n  timeSelect.position(400, 10);\n  timeSelect.option('3 seconds', 3000);\n  timeSelect.option('7 seconds', 7000);\n  timeSelect.option('10 seconds', 10000);\n  timeSelect.changed(() => interval = timeSelect.value());\n\n  // Filter selection dropdown\n  filterSelect = createSelect();\n  filterSelect.position(400, 50);\n  filterSelect.option('None', 'none');\n  filterSelect.option('Posterize', 'posterize');\n  filterSelect.option('Blur', 'blur');\n  filterSelect.option('Threshold', 'threshold');\n  filterSelect.option('Black&White', 'blackwhite');\n  filterSelect.changed(() => selectedFilter = filterSelect.value());\n\n  button = createButton('Press To Start');\n  button.position(250, 240);\n  button.mousePressed(getready);\n  \n  if (!backgroundMusic.isPlaying()) {\n    backgroundMusic.loop();\n    \n    userInput = createInput('');\n  userInput.position(400, 130); // Adjust position as needed\n    userInput.attribute('placeholder', 'Type text here');\n  \n}\n}\n\nfunction draw() {\n  if (mode == 'start') {\n    translate(width, 0);\n    scale(-1, 1);\n    image(capture, 0, 0);\n}\n  else if (mode=='pic1'){\n    translate(width,0);\n  scale(-1, 1);\n  image(capture, 0, 0); \n    \n  }\n  else if (mode=='pic2'){\n    translate(width,0);\n  scale(-1, 1);\n  image(capture, 0, 0); \n  }\n  else if (mode=='done'){\n    translate(width,0);\n  scale(-1, 1);\n  image(capture, 0, 0); \n    \n    \n    drawOldFashionedFrame();\n    displayNostalgicMessage(); // Display the nostalgic message\n    \n  }\n  \n        switch (selectedFilter) {\n    case 'posterize':\n      filter(POSTERIZE, 3);\n      break;\n    case 'blur':\n      filter(BLUR, 3);\n      break;\n    case 'threshold':\n      filter(THRESHOLD);\n      break;\n    case 'blackwhite':\n        filter(GRAY);\n        break;\n  }\n\n  }\n\nfunction getready() {\n  button.hide();\n  setTimeout(pic, interval); // Use the selected interval\n}\n\nfunction pic() {\n  image(capture, 0, 240);\n  mode = \"pic1\";\n  setTimeout(nextpic, interval);\n}\n\nfunction nextpic() {\n  if (mode == \"pic1\") {\n    mode = \"pic2\";\n    image(capture, 0, 480);\n    setTimeout(lastpic, interval);\n  }\n}\n\nfunction lastpic() {\n  if (mode == \"pic2\") {\n    mode = \"done\";\n    image(capture, 0, 720);\n    setTimeout(done, interval);\n  }\n}\n\nfunction done() {\n  if (mode == \"done\") {\n    mode = \"stop\";\n    image(capture, 0, 960); // Adjust if needed\n\n    let userText = userInput.value(); // Get the text from the input\n    fill(0); // Text color\n    textSize(30); // Text size\n    textAlign(CENTER, BOTTOM);\n    textFont(font);\n    text(userText, width / 2, 970 - 10); // Position the text at the bottom\n\n    setTimeout(end, 500);\n  }\n}\n\n\nfunction end(){\n  camerasound.stop();\n   butt1=createButton('Save');\n    butt1.position(300,240);\n    butt1.mousePressed(savepic);\n  \n  backgroundMusic.stop();\n\n\n}\nfunction savepic(){\n  save('myCanvas.png');\n\n}\n\nfunction displayNostalgicMessage() {\n    let message = nostalgicMessages[Math.floor(Math.random() * nostalgicMessages.length)];\n\n    textSize(30); // Keep or adjust the text size as needed\n    textAlign(CENTER, CENTER);\n    \n    // Clear the previous message by redrawing a smaller background area\n    // Adjust the fill color and coordinates as needed to match your layout\n    fill(211, 245, 245); // Background color of the message area\n    noStroke();\n    // Reduce both the vertical start position and height of the rectangle\n    rect(0, capture.height + 30, width, 40); // Further reduced height and adjusted position\n\n    // Set the fill color back for the text\n    fill(0); // Black text\n\n    // Apply the same transformations to the text as the camera feed\n    translate(width, 0);\n    scale(-1, 1);\n\n    // Adjust the vertical position of the text to align with the new rectangle size\n    text(message, width / 2, capture.height + 50);\n\n    // Reset the transformations after drawing the text\n    resetMatrix();\n}\n\nfunction drawOldFashionedFrame() {\n  noFill();\n  stroke(frameColor);\n  strokeWeight(35);\n  rect(0, 0, 320, 960);\n}\n",
+        "content": "//https://editor.p5js.org/kg3171/sketches/XqtIs0y7O\n//ims04-chlo.\n\nlet capture;\nlet button;\nlet camerasound;\nlet timeSelect; // Variable for the dropdown menu\nlet filterSelect; // Variable for the filter selection dropdown\nlet interval = 3000; // Default time interval\nlet mode = \"start\";\nlet selectedFilter = \"none\"; // Default filter\nlet backgroundMusic;\nlet frameColor = '#7fff00';\nlet colorSelect;\nlet userInput;\n\n\nlet nostalgicMessages = [\n    \"🥑🐢🍄🧃🔫\",\n    \"🌷🍰🍓🧷🎀\",\n    \"🫧🧋🦢🎧🕶️\",\n    \"🌸🍡🩰🎀🛍\",\n    \"🧾🥣🍼🧊🥚\",\n    \"🫐🎏⛄️🌊🦋\"\n];\n\nfunction preload() {\n  camerasound = loadSound('cam.mp3');\n  backgroundMusic = loadSound('background.mp3');\n  font = loadFont('font.otf');\n}\n\nfunction setup() {\n  createCanvas(320, 960);\n  capture = createCapture(VIDEO);\n  capture.size(320, 240);\n  capture.hide();\n  \n    colorSelect = createSelect();\n  colorSelect.position(400, 90);\n  colorSelect.option('Green', '#7fff00');\n  colorSelect.option('Black', '#000000');\n  colorSelect.option('Pink', '#FFC0CB');\n  colorSelect.option('Blue', '#1493ff');\n  colorSelect.option('Gray', '#dbe2e9');\n  colorSelect.option('Orange', '#ffa500');\n  colorSelect.option('DarkPink', '#ff69b4');\n  colorSelect.changed(() => frameColor = colorSelect.value());\n\n  // Time selection dropdown\n  timeSelect = createSelect();\n  timeSelect.position(400, 10);\n  timeSelect.option('3 seconds', 3000);\n  timeSelect.option('7 seconds', 7000);\n  timeSelect.option('10 seconds', 10000);\n  timeSelect.changed(() => interval = timeSelect.value());\n\n  // Filter selection dropdown\n  filterSelect = createSelect();\n  filterSelect.position(400, 50);\n  filterSelect.option('None', 'none');\n  filterSelect.option('Posterize', 'posterize');\n  filterSelect.option('Blur', 'blur');\n  filterSelect.option('Threshold', 'threshold');\n  filterSelect.option('Black&White', 'blackwhite');\n  filterSelect.changed(() => selectedFilter = filterSelect.value());\n\n  button = createButton('Press To Start');\n  button.position(250, 240);\n  button.mousePressed(getready);\n  \n  if (!backgroundMusic.isPlaying()) {\n    backgroundMusic.loop();\n    \n    userInput = createInput('');\n  userInput.position(400, 130); // Adjust position as needed\n    userInput.attribute('placeholder', 'Type text here');\n  \n}\n}\n\nfunction draw() {\n  if (mode == 'start') {\n    translate(width, 0);\n    scale(-1, 1);\n    image(capture, 0, 0);\n}\n  else if (mode=='pic1'){\n    translate(width,0);\n  scale(-1, 1);\n  image(capture, 0, 0); \n    \n  }\n  else if (mode=='pic2'){\n    translate(width,0);\n  scale(-1, 1);\n  image(capture, 0, 0); \n  }\n  else if (mode=='done'){\n    translate(width,0);\n  scale(-1, 1);\n  image(capture, 0, 0); \n    \n    \n    drawOldFashionedFrame();\n    displayNostalgicMessage(); // Display the nostalgic message\n    \n  }\n  \n        switch (selectedFilter) {\n    case 'posterize':\n      filter(POSTERIZE, 3);\n      break;\n    case 'blur':\n      filter(BLUR, 3);\n      break;\n    case 'threshold':\n      filter(THRESHOLD);\n      break;\n    case 'blackwhite':\n        filter(GRAY);\n        break;\n  }\n\n  }\n\nfunction getready() {\n  button.hide();\n  setTimeout(pic, interval); // Use the selected interval\n}\n\nfunction pic() {\n  image(capture, 0, 240);\n  mode = \"pic1\";\n  setTimeout(nextpic, interval);\n}\n\nfunction nextpic() {\n  if (mode == \"pic1\") {\n    mode = \"pic2\";\n    image(capture, 0, 480);\n    setTimeout(lastpic, interval);\n  }\n}\n\nfunction lastpic() {\n  if (mode == \"pic2\") {\n    mode = \"done\";\n    image(capture, 0, 720);\n    setTimeout(done, interval);\n  }\n}\n\nfunction done() {\n  if (mode == \"done\") {\n    mode = \"stop\";\n    image(capture, 0, 960); // Adjust if needed\n\n    let userText = userInput.value(); // Get the text from the input\n    fill(0); // Text color\n    textSize(30); // Text size\n    textAlign(CENTER, BOTTOM);\n    textFont(font);\n    text(userText, width / 2, 970 - 10); // Position the text at the bottom\n\n    setTimeout(end, 500);\n  }\n}\n\n\nfunction end(){\n  camerasound.stop();\n   butt1=createButton('Save');\n    butt1.position(300,240);\n    butt1.mousePressed(savepic);\n  \n  backgroundMusic.stop();\n\n\n}\nfunction savepic(){\n  save('myCanvas.png');\n\n}\n\nfunction displayNostalgicMessage() {\n    let message = nostalgicMessages[Math.floor(Math.random() * nostalgicMessages.length)];\n\n    textSize(30); // Keep or adjust the text size as needed\n    textAlign(CENTER, CENTER);\n    \n    // Clear the previous message by redrawing a smaller background area\n    // Adjust the fill color and coordinates as needed to match your layout\n    fill(211, 245, 245); // Background color of the message area\n    noStroke();\n    // Reduce both the vertical start position and height of the rectangle\n    rect(0, capture.height + 30, width, 40); // Further reduced height and adjusted position\n\n    // Set the fill color back for the text\n    fill(0); // Black text\n\n    // Apply the same transformations to the text as the camera feed\n    translate(width, 0);\n    scale(-1, 1);\n\n    // Adjust the vertical position of the text to align with the new rectangle size\n    text(message, width / 2, capture.height + 50);\n\n    // Reset the transformations after drawing the text\n    resetMatrix();\n}\n\nfunction drawOldFashionedFrame() {\n  noFill();\n  stroke(frameColor);\n  strokeWeight(35);\n  rect(0, 0, 320, 960);\n}\n",
         "children": [],
         "fileType": "file",
         "_id": "660d8da06817d45d0877c01d",
         "isSelectedFile": true,
-        "createdAt": "2024-04-16T13:23:13.022Z",
-        "updatedAt": "2024-04-16T13:23:13.022Z",
+        "createdAt": "2024-04-30T09:22:02.085Z",
+        "updatedAt": "2024-04-30T09:22:02.085Z",
         "id": "660d8da06817d45d0877c01d"
       },
       {
@@ -1623,8 +3031,8 @@
         "fileType": "file",
         "_id": "660d8da06817d45d0877c01c",
         "isSelectedFile": false,
-        "createdAt": "2024-04-16T13:23:13.022Z",
-        "updatedAt": "2024-04-16T13:23:13.022Z",
+        "createdAt": "2024-04-30T09:22:02.085Z",
+        "updatedAt": "2024-04-30T09:22:02.085Z",
         "id": "660d8da06817d45d0877c01c"
       },
       {
@@ -1634,8 +3042,8 @@
         "fileType": "file",
         "_id": "660d8da06817d45d0877c01e",
         "isSelectedFile": false,
-        "createdAt": "2024-04-16T13:23:13.022Z",
-        "updatedAt": "2024-04-16T13:23:13.022Z",
+        "createdAt": "2024-04-30T09:22:02.085Z",
+        "updatedAt": "2024-04-30T09:22:02.085Z",
         "id": "660d8da06817d45d0877c01e"
       },
       {
@@ -1645,8 +3053,8 @@
         "fileType": "file",
         "_id": "660d8da06817d45d0877c01b",
         "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/05472d56-3e68-4958-8468-bc5bad23a5d8.mp3",
-        "updatedAt": "2024-04-16T13:23:13.022Z",
-        "createdAt": "2024-04-16T13:23:13.022Z",
+        "updatedAt": "2024-04-30T09:22:02.085Z",
+        "createdAt": "2024-04-30T09:22:02.085Z",
         "isSelectedFile": false,
         "id": "660d8da06817d45d0877c01b"
       },
@@ -1657,8 +3065,8 @@
         "fileType": "file",
         "_id": "6616b11eb73bc6001a857ac4",
         "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/d3a6e7d6-b810-4fae-b434-5896cc36ed04.mp3",
-        "updatedAt": "2024-04-16T13:23:13.022Z",
-        "createdAt": "2024-04-16T13:23:13.022Z",
+        "updatedAt": "2024-04-30T09:22:02.085Z",
+        "createdAt": "2024-04-30T09:22:02.085Z",
         "isSelectedFile": false,
         "id": "6616b11eb73bc6001a857ac4"
       },
@@ -1669,8 +3077,8 @@
         "fileType": "file",
         "_id": "6616caf8c6bdd9001aad3c21",
         "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/6a9e1818-a977-4b31-bbac-f0d80ea42248.jpeg",
-        "updatedAt": "2024-04-16T13:23:13.022Z",
-        "createdAt": "2024-04-16T13:23:13.022Z",
+        "updatedAt": "2024-04-30T09:22:02.085Z",
+        "createdAt": "2024-04-30T09:22:02.085Z",
         "isSelectedFile": false,
         "id": "6616caf8c6bdd9001aad3c21"
       },
@@ -1681,14 +3089,14 @@
         "fileType": "file",
         "_id": "66174169fa0219001a9caf82",
         "url": "https://assets.editor.p5js.org/6331f1580d11a7001c174ac0/940b9f28-23c1-424c-a536-5d727c9e75a6.otf",
-        "updatedAt": "2024-04-16T13:23:13.022Z",
-        "createdAt": "2024-04-16T13:23:13.022Z",
+        "updatedAt": "2024-04-30T09:22:02.085Z",
+        "createdAt": "2024-04-30T09:22:02.085Z",
         "isSelectedFile": false,
         "id": "66174169fa0219001a9caf82"
       }
     ],
     "createdAt": "2024-04-03T17:10:57.385Z",
-    "updatedAt": "2024-04-16T13:23:13.022Z",
+    "updatedAt": "2024-04-30T09:22:02.085Z",
     "id": "XqtIs0y7O"
   },
   {

@@ -1,19 +1,20 @@
-//https://editor.p5js.org/kg3171/sketches/XqtIs0y7O
-//ims04-chlo.
+//https://editor.p5js.org/kg3171/sketches/q38GhePJ8
+//ims06-chlo.
 
 let capture;
 let button;
 let camerasound;
-let timeSelect; // Variable for the dropdown menu
-let filterSelect; // Variable for the filter selection dropdown
-let interval = 3000; // Default time interval
+let timeSelect; 
+let filterSelect; 
+let interval = 3000; 
 let mode = "start";
-let selectedFilter = "none"; // Default filter
+let selectedFilter = "none"; 
 let backgroundMusic;
 let frameColor = '#7fff00';
 let colorSelect;
 let userInput;
-
+let countdownTime = 0;
+let showTimer = false;
 
 let nostalgicMessages = [
     "🥑🐢🍄🧃🔫",
@@ -36,7 +37,7 @@ function setup() {
   capture.size(320, 240);
   capture.hide();
   
-    colorSelect = createSelect();
+  colorSelect = createSelect();
   colorSelect.position(400, 90);
   colorSelect.option('Green', '#7fff00');
   colorSelect.option('Black', '#000000');
@@ -73,7 +74,7 @@ function setup() {
     backgroundMusic.loop();
     
     userInput = createInput('');
-  userInput.position(400, 130); // Adjust position as needed
+    userInput.position(400, 130); 
     userInput.attribute('placeholder', 'Type text here');
   
 }
@@ -103,11 +104,11 @@ function draw() {
     
     
     drawOldFashionedFrame();
-    displayNostalgicMessage(); // Display the nostalgic message
+    displayNostalgicMessage(); 
     
   }
   
-        switch (selectedFilter) {
+    switch (selectedFilter) {
     case 'posterize':
       filter(POSTERIZE, 3);
       break;
@@ -126,7 +127,7 @@ function draw() {
 
 function getready() {
   button.hide();
-  setTimeout(pic, interval); // Use the selected interval
+  setTimeout(pic, interval); 
 }
 
 function pic() {
@@ -154,14 +155,14 @@ function lastpic() {
 function done() {
   if (mode == "done") {
     mode = "stop";
-    image(capture, 0, 960); // Adjust if needed
+    image(capture, 0, 960); 
 
-    let userText = userInput.value(); // Get the text from the input
+    let userText = userInput.value(); 
     fill(0); // Text color
     textSize(30); // Text size
     textAlign(CENTER, BOTTOM);
     textFont(font);
-    text(userText, width / 2, 970 - 10); // Position the text at the bottom
+    text(userText, width / 2, 970 - 10); 
 
     setTimeout(end, 500);
   }
@@ -186,27 +187,20 @@ function savepic(){
 function displayNostalgicMessage() {
     let message = nostalgicMessages[Math.floor(Math.random() * nostalgicMessages.length)];
 
-    textSize(30); // Keep or adjust the text size as needed
+    textSize(30); 
     textAlign(CENTER, CENTER);
     
-    // Clear the previous message by redrawing a smaller background area
-    // Adjust the fill color and coordinates as needed to match your layout
-    fill(211, 245, 245); // Background color of the message area
+    fill(211, 245, 245); 
     noStroke();
-    // Reduce both the vertical start position and height of the rectangle
-    rect(0, capture.height + 30, width, 40); // Further reduced height and adjusted position
+    rect(0, capture.height + 30, width, 40); 
 
-    // Set the fill color back for the text
     fill(0); // Black text
 
-    // Apply the same transformations to the text as the camera feed
     translate(width, 0);
     scale(-1, 1);
 
-    // Adjust the vertical position of the text to align with the new rectangle size
     text(message, width / 2, capture.height + 50);
 
-    // Reset the transformations after drawing the text
     resetMatrix();
 }
 

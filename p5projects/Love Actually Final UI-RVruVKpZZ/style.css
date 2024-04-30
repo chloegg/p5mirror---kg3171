@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Jersey+15&display=swap');
+html, body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
+
+#instructionsModal h2 {
+  font-family: 'Jersey 15'; /* Specific font for the title */
+}
+
+#instructionsModal p {
+  font-family: 'Jersey 15';
+}

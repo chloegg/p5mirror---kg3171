@@ -1,6 +1,19 @@
 # Sketches for kg3171
-27 sketches  
-[XPhoto Week 10](https://editor.p5js.org/kg3171/sketches/XqtIs0y7O)<!-- 2024-04-16T13:23:13.022Z -->  
+40 sketches  
+[PhotoBooth - IMS](https://editor.p5js.org/kg3171/sketches/7bTAzOws8)<!-- 2024-04-30T10:37:22.055Z -->  
+[ims06-chlo.](https://editor.p5js.org/kg3171/sketches/q38GhePJ8)<!-- 2024-04-30T09:26:37.554Z -->  
+[XPhoto Week 10](https://editor.p5js.org/kg3171/sketches/XqtIs0y7O)<!-- 2024-04-30T09:22:02.085Z -->  
+[ims06-chlo. copy](https://editor.p5js.org/kg3171/sketches/FKoVzAN9H)<!-- 2024-04-29T22:05:28.393Z -->  
+[level 1 final](https://editor.p5js.org/kg3171/sketches/C1AXypwG2)<!-- 2024-04-29T12:52:26.507Z -->  
+[level 1](https://editor.p5js.org/kg3171/sketches/YaAoR6LqD)<!-- 2024-04-29T12:18:02.167Z -->  
+[Level 1 - Love Quest](https://editor.p5js.org/kg3171/sketches/5AYDZB1Aff)<!-- 2024-04-29T10:52:30.946Z -->  
+[Love Actually Final UI](https://editor.p5js.org/kg3171/sketches/RVruVKpZZ)<!-- 2024-04-29T10:50:02.122Z -->  
+[Love Actually copy copy copy](https://editor.p5js.org/kg3171/sketches/SmCruYZS3)<!-- 2024-04-29T04:31:04.636Z -->  
+[Love Actually copy](https://editor.p5js.org/kg3171/sketches/-HDsCS35f)<!-- 2024-04-29T04:27:10.077Z -->  
+[Love Actually copy](https://editor.p5js.org/kg3171/sketches/2HyxKnebd)<!-- 2024-04-29T04:24:55.272Z -->  
+[Love Quest](https://editor.p5js.org/kg3171/sketches/C95Ii3IUO)<!-- 2024-04-29T04:24:51.961Z -->  
+[Love Actually](https://editor.p5js.org/kg3171/sketches/Yz2gdVhil)<!-- 2024-04-29T04:20:42.273Z -->  
+[ims05-chlo.](https://editor.p5js.org/kg3171/sketches/wRGzcNFRu)<!-- 2024-04-23T13:57:16.038Z -->  
 [ims04-chlo.](https://editor.p5js.org/kg3171/sketches/4sp9J0yL-f)<!-- 2024-04-16T11:18:48.902Z -->  
 [ims03 - chlo.](https://editor.p5js.org/kg3171/sketches/01Twqt8Ct)<!-- 2024-04-09T13:35:22.852Z -->  
 [ims02-chlo.](https://editor.p5js.org/kg3171/sketches/IO23zlwZ3)<!-- 2024-04-02T15:47:49.521Z -->  

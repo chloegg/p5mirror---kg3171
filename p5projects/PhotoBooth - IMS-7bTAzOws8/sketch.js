@@ -1,5 +1,5 @@
-//https://editor.p5js.org/kg3171/sketches/XqtIs0y7O
-//ims04-chlo.
+//https://editor.p5js.org/kg3171/sketches/7bTAzOws8
+//PhotoBooth - IMS
 
 let capture;
 let button;
@@ -13,16 +13,11 @@ let backgroundMusic;
 let frameColor = '#7fff00';
 let colorSelect;
 let userInput;
+let startOverButton;
+let butt1; // Define butt1 variable
 
+let emojis = ['🌷', '🌿', '🩰', '🍼', '🍡', '👻', '💖', '🌟', '🫧', '🌸', '🎏','⛄️','🫐','🍓','🧾','🃏','🧊','🍰','🦢','🌊','🎈', '🧸','🛒','🎀','🎁','🔫','💕','🖍','🎧','🧃','🎂','🍅','🥑','🍊',''];
 
-let nostalgicMessages = [
-    "🥑🐢🍄🧃🔫",
-    "🌷🍰🍓🧷🎀",
-    "🫧🧋🦢🎧🕶️",
-    "🌸🍡🩰🎀🛍",
-    "🧾🥣🍼🧊🥚",
-    "🫐🎏⛄️🌊🦋"
-];
 
 function preload() {
   camerasound = loadSound('cam.mp3');
@@ -66,17 +61,20 @@ function setup() {
   filterSelect.changed(() => selectedFilter = filterSelect.value());
 
   button = createButton('Press To Start');
-  button.position(250, 240);
+  button.position(405, 240);
   button.mousePressed(getready);
+  
+  startOverButton = createButton("Start Over");
+    startOverButton.position(405, 200);
+    startOverButton.mousePressed(startOver);
   
   if (!backgroundMusic.isPlaying()) {
     backgroundMusic.loop();
+  }
     
     userInput = createInput('');
   userInput.position(400, 130); // Adjust position as needed
     userInput.attribute('placeholder', 'Type text here');
-  
-}
 }
 
 function draw() {
@@ -103,7 +101,6 @@ function draw() {
     
     
     drawOldFashionedFrame();
-    displayNostalgicMessage(); // Display the nostalgic message
     
   }
   
@@ -129,10 +126,49 @@ function getready() {
   setTimeout(pic, interval); // Use the selected interval
 }
 
+function drawRandomEmoji() {
+    const numberOfEmojis = round(random(15, 30)); // Increased number of emojis for the whole strip
+    textSize(25); // Set the emoji size
+
+    for (let i = 0; i < numberOfEmojis; i++) {
+        let emoji = random(emojis); // Select a random emoji
+        let xPos = random(20, 300); // Randomize the x position between 20 and 300
+        let yPos = random(20, 940); // Randomize the y position across the whole canvas height
+        text(emoji, xPos, yPos); // Draw the emoji at the random position
+    }
+}
+
 function pic() {
   image(capture, 0, 240);
   mode = "pic1";
   setTimeout(nextpic, interval);
+}
+
+function startOver() {
+    mode = "start"; // Reset the mode to the initial state
+    userInput.value(""); // Clear the user input field
+    button.show(); // Show the start button again if it was hidden
+    butt1.hide(); // Ensure the save button is hidden
+
+    timeSelect.value(3000); 
+    filterSelect.value('none'); 
+    colorSelect.value('#7fff00'); 
+    frameColor = '#7fff00'; 
+
+    if (backgroundMusic.isPlaying()) {
+        backgroundMusic.stop();
+    }
+    backgroundMusic.loop();
+
+    // Clear the canvas and redraw background if necessary
+    clear();
+    background(255); // Set to default white background, or as needed
+
+    // Reset the capture device if necessary
+    capture.remove(); // Stop the existing capture
+    capture = createCapture(VIDEO); // Restart capture
+    capture.size(320, 240);
+    capture.hide();
 }
 
 function nextpic() {
@@ -155,61 +191,34 @@ function done() {
   if (mode == "done") {
     mode = "stop";
     image(capture, 0, 960); // Adjust if needed
+    translate(width, 0); // Move the origin to the canvas's right edge for mirroring
+    scale(-1, 1); // Apply horizontal flip to mirror everything
+    
+     drawRandomEmoji();
 
     let userText = userInput.value(); // Get the text from the input
     fill(0); // Text color
     textSize(30); // Text size
     textAlign(CENTER, BOTTOM);
     textFont(font);
-    text(userText, width / 2, 970 - 10); // Position the text at the bottom
+     text(userInput.value(), width / 2, 950);
 
     setTimeout(end, 500);
   }
 }
 
-
-function end(){
-  camerasound.stop();
-   butt1=createButton('Save');
-    butt1.position(300,240);
+function end() {
+    camerasound.stop();
+    butt1 = createButton("Save");
+    butt1.position(405, 240);
     butt1.mousePressed(savepic);
-  
-  backgroundMusic.stop();
-
-
+    backgroundMusic.stop();
 }
+
 function savepic(){
   save('myCanvas.png');
 
 }
-
-function displayNostalgicMessage() {
-    let message = nostalgicMessages[Math.floor(Math.random() * nostalgicMessages.length)];
-
-    textSize(30); // Keep or adjust the text size as needed
-    textAlign(CENTER, CENTER);
-    
-    // Clear the previous message by redrawing a smaller background area
-    // Adjust the fill color and coordinates as needed to match your layout
-    fill(211, 245, 245); // Background color of the message area
-    noStroke();
-    // Reduce both the vertical start position and height of the rectangle
-    rect(0, capture.height + 30, width, 40); // Further reduced height and adjusted position
-
-    // Set the fill color back for the text
-    fill(0); // Black text
-
-    // Apply the same transformations to the text as the camera feed
-    translate(width, 0);
-    scale(-1, 1);
-
-    // Adjust the vertical position of the text to align with the new rectangle size
-    text(message, width / 2, capture.height + 50);
-
-    // Reset the transformations after drawing the text
-    resetMatrix();
-}
-
 function drawOldFashionedFrame() {
   noFill();
   stroke(frameColor);
